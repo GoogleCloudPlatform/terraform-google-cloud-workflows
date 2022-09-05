@@ -42,8 +42,9 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
-| workflow\_id | n/a |
-| workflow\_region | n/a |
+| workflow\_id | Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}} |
+| workflow\_region | The region of the workflow. |
+| workflow\_revision\_id | The revision of the workflow. A new one is generated if the service account or source contents is changed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

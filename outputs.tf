@@ -15,16 +15,16 @@
  */
 
 output "workflow_id" {
-  value = google_workflows_workflow.workflow.id
+  value       = google_workflows_workflow.workflow.id
   description = "Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}}"
 }
 
 output "workflow_revision_id" {
-  value = google_workflows_workflow.workflow.revision_id
+  value       = google_workflows_workflow.workflow.revision_id
   description = "The revision of the workflow. A new one is generated if the service account or source contents is changed."
 }
 
 output "workflow_region" {
-  value = google_workflows_workflow.workflow.region
+  value       = google_workflows_workflow.workflow.region
   description = "The region of the workflow."
 }

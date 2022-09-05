@@ -15,6 +15,7 @@ This example illustrates how to use the `cloud-workflow` module.
 |------|-------------|
 | workflow\_id | The id  of the workflow. |
 | workflow\_region | The id  of the workflow. |
+| workflow\_revision\_id | The revision\_id  of the workflow. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

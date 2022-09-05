@@ -15,6 +15,6 @@
  */
 
 module "cloud_workflow" {
-  source = "../../../examples/simple_workflow"
-  project_id      = var.project_id
+  source     = "../../../examples/simple_workflow"
+  project_id = var.project_id
 }
