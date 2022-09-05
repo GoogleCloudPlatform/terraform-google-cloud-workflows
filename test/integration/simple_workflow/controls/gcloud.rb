@@ -26,5 +26,6 @@ control "gcloud" do
       its(:exit_status) { should eq 0 }
       its(:stderr) { should eq '' }
       its(:stdout) { should include "#{attribute('workflow_id')}" }
+      its(:stdout) { should include "#{attribute('workflow_revision_id')}" }
     end
   end
