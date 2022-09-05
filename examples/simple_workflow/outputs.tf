@@ -18,3 +18,9 @@ output "workflow_id" {
   description = "The id  of the workflow."
   value       = module.cloud_workflow.workflow_id
 }
+
+
+output "workflow_region" {
+  description = "The id  of the workflow."
+  value       = module.cloud_workflow.workflow_region
+}

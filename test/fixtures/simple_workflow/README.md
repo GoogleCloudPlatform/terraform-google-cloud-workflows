@@ -13,6 +13,7 @@ This example illustrates how to use the `cloud-workflow` module.
 
 | Name | Description |
 |------|-------------|
+| project\_id | Google Cloud project in which the service was created |
 | workflow\_id | The id  of the workflow. |
 | workflow\_region | The id  of the workflow. |
 

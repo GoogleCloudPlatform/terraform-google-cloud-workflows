@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = string
+module "cloud_workflow" {
+  source = "../../../examples/simple_workflow"
+  project_id      = var.project_id
 }
