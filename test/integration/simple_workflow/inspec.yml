@@ -26,3 +26,6 @@ attributes:
   - name: workflow_region
     required: true
     type: string
+  - name: workflow_revision_id
+    required: true
+    type: string
