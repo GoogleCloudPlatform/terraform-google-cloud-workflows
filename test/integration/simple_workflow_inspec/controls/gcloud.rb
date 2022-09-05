@@ -14,14 +14,12 @@
 
 control "gcloud" do
     title "gcloud"
-  
     describe command("gcloud --project=#{attribute("project_id")} services list --enabled") do
       its(:exit_status) { should eq 0 }
       its(:stderr) { should eq "" }
       its(:stdout) { should match "workflows.googleapis.com" }
       its(:stdout) { should match "workflowexecutions.googleapis.com" }
     end
-  
     describe command("gcloud --project=#{attribute("project_id")} workflows list --location=#{attribute("workflow_region")} --format=json") do
       its(:exit_status) { should eq 0 }
       its(:stderr) { should eq '' }
