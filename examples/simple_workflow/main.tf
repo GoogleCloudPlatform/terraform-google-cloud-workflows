@@ -15,7 +15,7 @@
  */
 
 module "cloud_workflow" {
-  source = "../.."
+  source          = "../.."
   project_id      = var.project_id
   workflow_name   = "wf-sample"
   region          = "us-central1"
