@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-module "cloud_workflow" {
-  source = "../.."
-  project_id      = var.project_id
-  workflow_name   = "wf-sample"
-  region          = "us-central1"
-  workflow_source = <<-EOF
+project_id      = "ashwinknaik-314910"
+workflow_name   = "wf-sample"
+region          = "us-central1"
+workflow_source = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
   #
   # This workflow does the following:
@@ -46,5 +44,3 @@ module "cloud_workflow" {
   - returnOutput:
       return: $${WikiResult.body[1]}
 EOF
-
-}

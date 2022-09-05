@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = string
+output "workflow_id" {
+  description = "The id  of the workflow."
+  value       = module.cloud_workflow.workflow_id
+}
+
+output "workflow_region" {
+  description = "The id  of the workflow."
+  value       = module.cloud_workflow.workflow_region
+}
+
+output "project_id" {
+  description = "Google Cloud project in which the service was created"
+  value       = var.project_id
 }

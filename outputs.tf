@@ -17,3 +17,7 @@
 output "workflow_id" {
   value = google_workflows_workflow.workflow.id
 }
+
+output "workflow_region" {
+  value = google_workflows_workflow.workflow.region
+}

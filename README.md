@@ -28,14 +28,22 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bucket\_name | The name of the bucket to create | `any` | n/a | yes |
-| project\_id | The project ID to deploy to | `any` | n/a | yes |
+| enable\_apis | Whether or not to enable underlying apis in this solution. | `string` | `"true"` | no |
+| project\_id | The project ID to deploy to | `string` | n/a | yes |
+| region | The name of the region where workflow will be created | `string` | n/a | yes |
+| service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
+| service\_account\_roles | Roles to be assigned to the Service Account | `list(string)` | `[]` | no |
+| workflow\_description | Description for the cloud workflow | `string` | `"Sample workflow Description"` | no |
+| workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
+| workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |
+| workflow\_source | Workflow YAML code to be executed. The size limit is 32KB. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| bucket\_name | n/a |
+| workflow\_id | n/a |
+| workflow\_region | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
