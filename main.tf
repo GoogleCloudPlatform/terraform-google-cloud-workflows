@@ -18,11 +18,8 @@ resource "google_workflows_workflow" "workflow" {
   name            = var.workflow_name
   region          = var.region
   description     = var.workflow_description
-  service_account = local.sa_email
+  service_account = var.service_account_email
   project         = var.project_id
   labels          = var.workflow_labels
   source_contents = var.workflow_source
-  depends_on = [
-    module.project_services
-  ]
 }

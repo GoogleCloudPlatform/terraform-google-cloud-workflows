@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
+module "service_account" {
+  source     = "terraform-google-modules/service-accounts/google"
+  version    = "~> 4.1.1"
+  project_id = var.project_id
+  prefix     = "sa-workflow"
+  names      = ["simple"]
+}
+
 module "cloud_workflow" {
-  source          = "../.."
-  project_id      = var.project_id
-  workflow_name   = "wf-sample"
-  region          = "us-central1"
-  workflow_source = <<-EOF
+  source                = "../.."
+  project_id            = var.project_id
+  workflow_name         = "wf-sample"
+  region                = "us-central1"
+  service_account_email = module.service_account.email
+  workflow_source       = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
   #
   # This workflow does the following:

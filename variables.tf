@@ -57,9 +57,3 @@ variable "service_account_email" {
   description = "Service Account email needed for the service"
   default     = ""
 }
-
-variable "service_account_roles" {
-  type        = list(string)
-  description = "Roles to be assigned to the Service Account"
-  default     = []
-}
