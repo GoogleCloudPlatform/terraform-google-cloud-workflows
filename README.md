@@ -28,7 +28,6 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| enable\_apis | Whether or not to enable underlying apis in this solution. | `string` | `"true"` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | region | The name of the region where workflow will be created | `string` | n/a | yes |
 | service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
