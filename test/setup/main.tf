@@ -29,6 +29,8 @@ module "project" {
     "cloudresourcemanager.googleapis.com",
     "storage-api.googleapis.com",
     "serviceusage.googleapis.com",
-    "workflows.googleapis.com"
+    "workflows.googleapis.com",
+    "cloudscheduler.googleapis.com",
+    "eventarc.googleapis.com"
   ]
 }
