@@ -15,8 +15,28 @@ module "cloud_workflow" {
   source  = "terraform-google-modules/cloud-workflow/google"
   version = "~> 0.1"
 
-  project_id  = "<PROJECT ID>"
-  bucket_name = "gcs-test-bucket"
+  source                = "../.."
+  project_id            = var.project_id
+  workflow_name         = "wf-sample"
+  region                = "us-central1"
+  service_account_email = <svc_acc email>
+  workflow_source       = <<-EOF
+  - getCurrentTime:
+      call: http.get
+      args:
+          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+      result: CurrentDateTime
+  - readWikipedia:
+      call: http.get
+      args:
+          url: https://en.wikipedia.org/w/api.php
+          query:
+              action: opensearch
+              search: $${CurrentDateTime.body.dayOfTheWeek}
+      result: WikiResult
+  - returnOutput:
+      return: $${WikiResult.body[1]}
+EOF
 }
 ```
 
