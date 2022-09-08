@@ -31,5 +31,10 @@ output "workflow_region" {
 
 output "scheduler_job_id" {
   description = "Google Cloud scheduler job id"
-  value       = google_cloud_scheduler_job.job.id
+  value       = local.enable_scheduler == 1 ? google_cloud_scheduler_job.workflow[0].id : null
+}
+
+output "event_arc_id" {
+  description = "Google Event Arc id"
+  value       = local.enable_eventarc == 1 ? google_eventarc_trigger.workflow[0].id : null
 }

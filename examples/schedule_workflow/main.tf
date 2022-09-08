@@ -24,16 +24,20 @@ module "service_account" {
 }
 
 module "cloud_workflow" {
-  source                    = "../.."
-  project_id                = var.project_id
-  workflow_name             = "wf-sample"
-  region                    = "us-central1"
-  service_account_email     = module.service_account.email
-  cloud_scheduler_name      = "workflow-job"
-  cloud_scheduler_cron      = "*/3 * * * *"
-  cloud_scheduler_time_zone = "America/New_York"
-  cloud_scheduler_deadline  = "320s"
-  workflow_source           = <<-EOF
+  source                = "../.."
+  project_id            = var.project_id
+  workflow_name         = "wf-sample"
+  region                = "us-central1"
+  service_account_email = module.service_account.email
+  workflow_trigger = {
+    cloud_scheduler = {
+      name      = "workflow-job"
+      cron      = "*/3 * * * *"
+      time_zone = "America/New_York"
+      deadline  = "320s"
+    }
+  }
+  workflow_source = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
   #
   # This workflow does the following:

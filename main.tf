@@ -14,17 +14,38 @@
  * limitations under the License.
  */
 
+locals {
+  enable_eventarc  = length(var.workflow_trigger.event_arc == null ? {} : var.workflow_trigger.event_arc) > 0 ? 1 : 0
+  enable_scheduler = length(var.workflow_trigger.cloud_scheduler == null ? {} : var.workflow_trigger.cloud_scheduler) > 0 ? 1 : 0
+}
+
 data "google_compute_default_service_account" "default" {
   project = var.project_id
 }
 
-resource "google_cloud_scheduler_job" "job" {
+resource "google_eventarc_trigger" "workflow" {
+  count           = local.enable_eventarc
+  project         = var.project_id
+  name            = "name"
+  location        = var.region
+  service_account = data.google_compute_default_service_account.default.email
+  matching_criteria {
+    attribute = "type"
+    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+  }
+  destination {
+    workflow = google_workflows_workflow.workflow.id
+  }
+}
+
+resource "google_cloud_scheduler_job" "workflow" {
+  count            = local.enable_scheduler
   project          = var.project_id
-  name             = var.cloud_scheduler_name
+  name             = var.workflow_trigger.cloud_scheduler.name
   description      = "Cloud Scheduler for Workflow Jpb"
-  schedule         = var.cloud_scheduler_cron
-  time_zone        = var.cloud_scheduler_time_zone
-  attempt_deadline = var.cloud_scheduler_deadline
+  schedule         = var.workflow_trigger.cloud_scheduler.cron
+  time_zone        = var.workflow_trigger.cloud_scheduler.time_zone
+  attempt_deadline = var.workflow_trigger.cloud_scheduler.deadline
   region           = var.region
 
   http_target {
