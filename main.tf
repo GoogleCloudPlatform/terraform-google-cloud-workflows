@@ -14,6 +14,32 @@
  * limitations under the License.
  */
 
+data "google_compute_default_service_account" "default" {
+  project = var.project_id
+}
+
+resource "google_cloud_scheduler_job" "job" {
+  project          = var.project_id
+  name             = var.cloud_scheduler_name
+  description      = "Cloud Scheduler for Workflow Jpb"
+  schedule         = var.cloud_scheduler_cron
+  time_zone        = var.cloud_scheduler_time_zone
+  attempt_deadline = var.cloud_scheduler_deadline
+  region           = var.region
+
+  http_target {
+    http_method = "POST"
+    uri         = "https://workflowexecutions.googleapis.com/v1/${google_workflows_workflow.workflow.id}/executions"
+    body        = base64encode("{\"argument\":\"{}\",\"callLogLevel\":\"CALL_LOG_LEVEL_UNSPECIFIED\"}")
+
+    oauth_token {
+      service_account_email = data.google_compute_default_service_account.default.email
+      scope                 = "https://www.googleapis.com/auth/cloud-platform"
+    }
+  }
+
+}
+
 resource "google_workflows_workflow" "workflow" {
   name            = var.workflow_name
   region          = var.region

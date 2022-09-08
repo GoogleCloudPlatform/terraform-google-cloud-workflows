@@ -28,3 +28,8 @@ output "workflow_region" {
   value       = google_workflows_workflow.workflow.region
   description = "The region of the workflow."
 }
+
+output "scheduler_job_id" {
+  description = "Google Cloud scheduler job id"
+  value       = google_cloud_scheduler_job.job.id
+}

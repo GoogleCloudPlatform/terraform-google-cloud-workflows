@@ -32,5 +32,5 @@ output "workflow_revision_id" {
 
 output "scheduler_job_id" {
   description = "Google Cloud scheduler job id"
-  value       = google_cloud_scheduler_job.job.id
+  value       = module.cloud_workflow.scheduler_job_id
 }

@@ -15,11 +15,13 @@ module "cloud_workflow" {
   source  = "terraform-google-modules/cloud-workflow/google"
   version = "~> 0.1"
 
-  source                = "../.."
-  project_id            = var.project_id
-  workflow_name         = "wf-sample"
-  region                = "us-central1"
-  service_account_email = <svc_acc email>
+  workflow_name             = "wf-sample"
+  region                    = "us-central1"
+  service_account_email     = "<svc_acc>"
+  cloud_scheduler_name      = "workflow-job"
+  cloud_scheduler_cron      = "*/3 * * * *"
+  cloud_scheduler_time_zone = "America/New_York"
+  cloud_scheduler_deadline  = "320s"
   workflow_source       = <<-EOF
   - getCurrentTime:
       call: http.get
@@ -48,6 +50,10 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| cloud\_scheduler\_cron | Cron which represents the schedule on which the Cloud Scheduler Job will be executed. | `string` | n/a | yes |
+| cloud\_scheduler\_deadline | Cloud Scheduler Time Zone. | `string` | n/a | yes |
+| cloud\_scheduler\_name | Cloud Scheduler Name | `string` | n/a | yes |
+| cloud\_scheduler\_time\_zone | Cloud Scheduler Time Zone. | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | region | The name of the region where workflow will be created | `string` | n/a | yes |
 | service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
@@ -60,6 +66,7 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| scheduler\_job\_id | Google Cloud scheduler job id |
 | workflow\_id | Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}} |
 | workflow\_region | The region of the workflow. |
 | workflow\_revision\_id | The revision of the workflow. A new one is generated if the service account or source contents is changed. |

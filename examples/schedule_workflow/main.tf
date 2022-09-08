@@ -14,32 +14,6 @@
  * limitations under the License.
  */
 
-data "google_compute_default_service_account" "default" {
-  project = var.project_id
-}
-
-resource "google_cloud_scheduler_job" "job" {
-  project          = var.project_id
-  name             = "workflow-job"
-  description      = "workflow http job"
-  schedule         = "*/3 * * * *"
-  time_zone        = "America/New_York"
-  attempt_deadline = "320s"
-  region           = "us-central1"
-
-  http_target {
-    http_method = "POST"
-    uri         = "https://workflowexecutions.googleapis.com/v1/${module.cloud_workflow.workflow_id}/executions"
-    body        = base64encode("{\"argument\":\"{}\",\"callLogLevel\":\"CALL_LOG_LEVEL_UNSPECIFIED\"}")
-
-    oauth_token {
-      service_account_email = data.google_compute_default_service_account.default.email
-      scope                 = "https://www.googleapis.com/auth/cloud-platform"
-    }
-  }
-
-}
-
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
   version       = "~> 4.1.1"
@@ -50,12 +24,16 @@ module "service_account" {
 }
 
 module "cloud_workflow" {
-  source                = "../.."
-  project_id            = var.project_id
-  workflow_name         = "wf-sample"
-  region                = "us-central1"
-  service_account_email = module.service_account.email
-  workflow_source       = <<-EOF
+  source                    = "../.."
+  project_id                = var.project_id
+  workflow_name             = "wf-sample"
+  region                    = "us-central1"
+  service_account_email     = module.service_account.email
+  cloud_scheduler_name      = "workflow-job"
+  cloud_scheduler_cron      = "*/3 * * * *"
+  cloud_scheduler_time_zone = "America/New_York"
+  cloud_scheduler_deadline  = "320s"
+  workflow_source           = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
   #
   # This workflow does the following:

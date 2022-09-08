@@ -46,6 +46,26 @@ variable "workflow_labels" {
   default     = {}
 }
 
+variable "cloud_scheduler_name" {
+  description = "Cloud Scheduler Name"
+  type        = string
+}
+
+variable "cloud_scheduler_cron" {
+  description = "Cron which represents the schedule on which the Cloud Scheduler Job will be executed."
+  type        = string
+}
+
+variable "cloud_scheduler_time_zone" {
+  description = "Cloud Scheduler Time Zone."
+  type        = string
+}
+
+variable "cloud_scheduler_deadline" {
+  description = "Cloud Scheduler Time Zone."
+  type        = string
+}
+
 variable "service_account_email" {
   type        = string
   description = "Service Account email needed for the service"
