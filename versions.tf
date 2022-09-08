@@ -26,4 +26,5 @@ terraform {
   provider_meta "google" {
     module_name = "blueprints/terraform/cloud-workflow/v0.0.1"
   }
+  experiments = [module_variable_optional_attrs]
 }

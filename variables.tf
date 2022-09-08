@@ -46,24 +46,29 @@ variable "workflow_labels" {
   default     = {}
 }
 
-variable "cloud_scheduler_name" {
-  description = "Cloud Scheduler Name"
-  type        = string
-}
-
-variable "cloud_scheduler_cron" {
-  description = "Cron which represents the schedule on which the Cloud Scheduler Job will be executed."
-  type        = string
-}
-
-variable "cloud_scheduler_time_zone" {
-  description = "Cloud Scheduler Time Zone."
-  type        = string
-}
-
-variable "cloud_scheduler_deadline" {
-  description = "Cloud Scheduler Time Zone."
-  type        = string
+variable "workflow_trigger" {
+  type = object({
+    cloud_scheduler = optional(object({
+      name      = string
+      cron      = string
+      time_zone = string
+      deadline  = string
+    }))
+    event_arc = optional(object({
+      attribute = string
+      operator  = optional(string)
+      value     = string
+    }))
+  })
+  description = "Trigger for the Workflow . Cloud Scheduler OR Event Arc"
+  validation {
+    condition = !(
+      length(var.workflow_trigger.cloud_scheduler == null ? {} : var.workflow_trigger.cloud_scheduler) > 0
+      &&
+      length(var.workflow_trigger.event_arc == null ? {} : var.workflow_trigger.event_arc) > 0
+    )
+    error_message = "Either cloud_scheduler OR event_arc information is supported."
+  }
 }
 
 variable "service_account_email" {
