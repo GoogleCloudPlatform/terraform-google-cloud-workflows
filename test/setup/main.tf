@@ -31,6 +31,8 @@ module "project" {
     "serviceusage.googleapis.com",
     "workflows.googleapis.com",
     "cloudscheduler.googleapis.com",
-    "eventarc.googleapis.com"
+    "eventarc.googleapis.com",
+    "pubsub.googleapis.com",
+    "logging.googleapis.com",
   ]
 }

@@ -60,8 +60,12 @@ module "cloud_workflow" {
   service_account_email = "<svc_account>"
   workflow_trigger = {
     event_arc = {
-      attribute      = "type"
-      value          = "google.cloud.pubsub.topic.v1.messagePublished"
+      name                  = "trigger-pubsub-workflow-tf"
+      service_account_email = "<svc_account>"
+      matching_criteria = [{
+        attribute = "type"
+        value     = "google.cloud.pubsub.topic.v1.messagePublished"
+      }]
     }
   }
   workflow_source       = <<-EOF
