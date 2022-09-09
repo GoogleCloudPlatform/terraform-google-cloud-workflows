@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-module "cloud_workflow" {
-  source     = "../../../examples/event_arc_trigger_workflow"
-  project_id = var.project_id
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+  }
+  required_version = ">= 0.13"
 }

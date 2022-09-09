@@ -34,5 +34,6 @@ module "project" {
     "eventarc.googleapis.com",
     "pubsub.googleapis.com",
     "logging.googleapis.com",
+    "storage.googleapis.com",
   ]
 }
