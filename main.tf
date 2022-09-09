@@ -19,16 +19,12 @@ locals {
   enable_scheduler = var.workflow_trigger.cloud_scheduler == null ? 0 : 1
 }
 
-data "google_compute_default_service_account" "default" {
-  project = var.project_id
-}
-
 resource "google_eventarc_trigger" "workflow" {
   count           = local.enable_eventarc
   project         = var.project_id
   name            = var.workflow_trigger.event_arc.name
   location        = var.region
-  service_account = data.google_compute_default_service_account.default.email
+  service_account = var.workflow_trigger.event_arc.service_account_email
 
   dynamic "matching_criteria" {
     for_each = var.workflow_trigger.event_arc.matching_criteria
@@ -60,7 +56,7 @@ resource "google_cloud_scheduler_job" "workflow" {
     body        = base64encode("{\"argument\":\"{}\",\"callLogLevel\":\"CALL_LOG_LEVEL_UNSPECIFIED\"}")
 
     oauth_token {
-      service_account_email = data.google_compute_default_service_account.default.email
+      service_account_email = var.workflow_trigger.cloud_scheduler.service_account_email
       scope                 = "https://www.googleapis.com/auth/cloud-platform"
     }
   }

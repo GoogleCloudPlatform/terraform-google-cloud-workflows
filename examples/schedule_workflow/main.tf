@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+data "google_compute_default_service_account" "default" {
+  project = var.project_id
+}
 
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
@@ -31,10 +34,11 @@ module "cloud_workflow" {
   service_account_email = module.service_account.email
   workflow_trigger = {
     cloud_scheduler = {
-      name      = "workflow-job"
-      cron      = "*/3 * * * *"
-      time_zone = "America/New_York"
-      deadline  = "320s"
+      name                  = "workflow-job"
+      cron                  = "*/3 * * * *"
+      time_zone             = "America/New_York"
+      deadline              = "320s"
+      service_account_email = data.google_compute_default_service_account.default.email
     }
   }
   workflow_source = <<-EOF

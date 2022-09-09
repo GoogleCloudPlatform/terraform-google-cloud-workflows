@@ -49,13 +49,15 @@ variable "workflow_labels" {
 variable "workflow_trigger" {
   type = object({
     cloud_scheduler = optional(object({
-      name      = string
-      cron      = string
-      time_zone = string
-      deadline  = string
+      name                  = string
+      cron                  = string
+      time_zone             = string
+      deadline              = string
+      service_account_email = string
     }))
     event_arc = optional(object({
-      name = string
+      name                  = string
+      service_account_email = string
       matching_criteria = set(object({
         attribute = string
         operator  = optional(string)

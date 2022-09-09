@@ -21,10 +21,11 @@ module "cloud_workflow" {
   service_account_email = "<svc_account>"
   workflow_trigger = {
     cloud_scheduler = {
-      name      = "workflow-job"
-      cron      = "*/3 * * * *"
-      time_zone = "America/New_York"
-      deadline  = "320s"
+      name                  = "workflow-job"
+      cron                  = "*/3 * * * *"
+      time_zone             = "America/New_York"
+      deadline              = "320s"
+      service_account_email = "<svc_account>"
     }
   }
   workflow_source       = <<-EOF
@@ -98,7 +99,7 @@ Functional examples are included in the
 | workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
 | workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |
 | workflow\_source | Workflow YAML code to be executed. The size limit is 32KB. | `string` | n/a | yes |
-| workflow\_trigger | Trigger for the Workflow . Cloud Scheduler OR Event Arc | <pre>object({<br>    cloud_scheduler = optional(object({<br>      name      = string<br>      cron      = string<br>      time_zone = string<br>      deadline  = string<br>    }))<br>    event_arc = optional(object({<br>      name = string<br>      matching_criteria = set(object({<br>        attribute = string<br>        operator  = optional(string)<br>        value     = string<br>      }))<br>    }))<br>  })</pre> | n/a | yes |
+| workflow\_trigger | Trigger for the Workflow . Cloud Scheduler OR Event Arc | <pre>object({<br>    cloud_scheduler = optional(object({<br>      name                  = string<br>      cron                  = string<br>      time_zone             = string<br>      deadline              = string<br>      service_account_email = string<br>    }))<br>    event_arc = optional(object({<br>      name                  = string<br>      service_account_email = string<br>      matching_criteria = set(object({<br>        attribute = string<br>        operator  = optional(string)<br>        value     = string<br>      }))<br>    }))<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
