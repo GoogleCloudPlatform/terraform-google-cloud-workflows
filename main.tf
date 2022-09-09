@@ -15,8 +15,8 @@
  */
 
 locals {
-  enable_eventarc  = length(var.workflow_trigger.event_arc == null ? {} : var.workflow_trigger.event_arc) > 0 ? 1 : 0
-  enable_scheduler = length(var.workflow_trigger.cloud_scheduler == null ? {} : var.workflow_trigger.cloud_scheduler) > 0 ? 1 : 0
+  enable_eventarc  = var.workflow_trigger.event_arc == null ? 0 : 1
+  enable_scheduler = var.workflow_trigger.cloud_scheduler == null ? 0 : 1
 }
 
 data "google_compute_default_service_account" "default" {
@@ -26,13 +26,19 @@ data "google_compute_default_service_account" "default" {
 resource "google_eventarc_trigger" "workflow" {
   count           = local.enable_eventarc
   project         = var.project_id
-  name            = "name"
+  name            = var.workflow_trigger.event_arc.name
   location        = var.region
   service_account = data.google_compute_default_service_account.default.email
-  matching_criteria {
-    attribute = "type"
-    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+
+  dynamic "matching_criteria" {
+    for_each = var.workflow_trigger.event_arc.matching_criteria
+    content {
+      attribute = matching_criteria.value["attribute"]
+      value     = matching_criteria.value["value"]
+      operator  = matching_criteria.value["operator"]
+    }
   }
+
   destination {
     workflow = google_workflows_workflow.workflow.id
   }

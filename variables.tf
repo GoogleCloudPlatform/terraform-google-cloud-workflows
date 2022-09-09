@@ -55,17 +55,21 @@ variable "workflow_trigger" {
       deadline  = string
     }))
     event_arc = optional(object({
-      attribute = string
-      operator  = optional(string)
-      value     = string
+      name = string
+      matching_criteria = set(object({
+        attribute = string
+        operator  = optional(string)
+        value     = string
+      }))
     }))
   })
+
   description = "Trigger for the Workflow . Cloud Scheduler OR Event Arc"
   validation {
     condition = !(
-      length(var.workflow_trigger.cloud_scheduler == null ? {} : var.workflow_trigger.cloud_scheduler) > 0
+      var.workflow_trigger.cloud_scheduler == null
       &&
-      length(var.workflow_trigger.event_arc == null ? {} : var.workflow_trigger.event_arc) > 0
+      var.workflow_trigger.event_arc == null
     )
     error_message = "Either cloud_scheduler OR event_arc information is supported."
   }

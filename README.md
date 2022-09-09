@@ -1,14 +1,15 @@
 # terraform-google-cloud-workflow
 
-This module was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template/), which by default generates a module that simply creates a GCS bucket. As the module develops, this README should be updated.
+This module is used to create a [Workflow](https://cloud.google.com/workflows/docs) and trigger can be set on it either using a Cloud Scheduler or a Event Arc Trigger
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a GCS bucket with the provided name
+- Creates a Workflow
+- Creates either a Cloud Scheduler OR  Event Arc Trigger
 
 ## Usage
 
-Basic usage of this module is as follows:
+* Usage of this module for scheduling a Workflows using a Cloud Scheduler:
 
 ```hcl
 module "cloud_workflow" {
@@ -46,6 +47,42 @@ EOF
 }
 ```
 
+* Usage of this module to trigger Workflow using Event Arc Trigger:
+
+```hcl
+module "cloud_workflow" {
+  source  = "terraform-google-modules/cloud-workflow/google"
+  version = "~> 0.1"
+
+  workflow_name         = "wf-sample"
+  region                = "us-central1"
+  service_account_email = "<svc_account>"
+  workflow_trigger = {
+    event_arc = {
+      attribute      = "type"
+      value          = "google.cloud.pubsub.topic.v1.messagePublished"
+    }
+  }
+  workflow_source       = <<-EOF
+  - getCurrentTime:
+      call: http.get
+      args:
+          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+      result: CurrentDateTime
+  - readWikipedia:
+      call: http.get
+      args:
+          url: https://en.wikipedia.org/w/api.php
+          query:
+              action: opensearch
+              search: $${CurrentDateTime.body.dayOfTheWeek}
+      result: WikiResult
+  - returnOutput:
+      return: $${WikiResult.body[1]}
+EOF
+}
+```
+
 Functional examples are included in the
 [examples](./examples/) directory.
 
@@ -61,7 +98,7 @@ Functional examples are included in the
 | workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
 | workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |
 | workflow\_source | Workflow YAML code to be executed. The size limit is 32KB. | `string` | n/a | yes |
-| workflow\_trigger | Trigger for the Workflow . Cloud Scheduler OR Event Arc | <pre>object({<br>    cloud_scheduler = optional(object({<br>      name      = string<br>      cron      = string<br>      time_zone = string<br>      deadline  = string<br>    }))<br>    event_arc = optional(object({<br>      attribute = string<br>      operator  = optional(string)<br>      value     = string<br>    }))<br>  })</pre> | n/a | yes |
+| workflow\_trigger | Trigger for the Workflow . Cloud Scheduler OR Event Arc | <pre>object({<br>    cloud_scheduler = optional(object({<br>      name      = string<br>      cron      = string<br>      time_zone = string<br>      deadline  = string<br>    }))<br>    event_arc = optional(object({<br>      name = string<br>      matching_criteria = set(object({<br>        attribute = string<br>        operator  = optional(string)<br>        value     = string<br>      }))<br>    }))<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
