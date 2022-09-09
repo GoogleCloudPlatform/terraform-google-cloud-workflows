@@ -40,24 +40,23 @@ func TestScheduleWorkflow(t *testing.T) {
 		schedulerJobId := bpt.GetStringOutput("scheduler_job_id")
 		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
 
-		op1 := gcloud.Run(t, "workflows list", gcOps).Array()[0]
-		assert.Equal(workflowId, op1.Get("name").String(), "should have the right Workflow ID")
-		assert.Equal(workflowRevisionId, op1.Get("revisionId").String(), "should have the right Workflow RevisionId")
+		workflowInfo := gcloud.Run(t, "workflows describe "+workflowId, gcOps)
+		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")
 
-		op2 := gcloud.Run(t, "scheduler jobs describe "+schedulerJobId, gcOps)
-		assert.Contains(op2.Get("httpTarget").Get("uri").String(), workflowId, "should have the right Workflow ID")
-
-		fmt.Println("Sleeping for ", waitSeconds, " seconds")
-		time.Sleep(5 * time.Second)
-
-		op3 := gcloud.Run(t, "scheduler jobs run "+schedulerJobId, gcOps)
-		assert.Equal("ENABLED", op3.Get("state").String(), "Scheduler Job should be in ENABLED status")
+		schedulerInfo := gcloud.Run(t, "scheduler jobs describe "+schedulerJobId, gcOps)
+		assert.Contains(schedulerInfo.Get("httpTarget").Get("uri").String(), workflowId, "should have the right Workflow ID")
 
 		fmt.Println("Sleeping for ", waitSeconds, " seconds")
 		time.Sleep(5 * time.Second)
 
-		op4 := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
-		assert.Equal("SUCCEEDED", op4.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
+		schedulerTrigger := gcloud.Run(t, "scheduler jobs run "+schedulerJobId, gcOps)
+		assert.Equal("ENABLED", schedulerTrigger.Get("state").String(), "Scheduler Job should be in ENABLED status")
+
+		fmt.Println("Sleeping for ", waitSeconds, " seconds")
+		time.Sleep(5 * time.Second)
+
+		workflowExecution := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
+		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
 	})
 
 	bpt.Test()

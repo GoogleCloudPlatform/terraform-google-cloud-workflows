@@ -41,23 +41,22 @@ func TestEventArcTriggerWorkflow(t *testing.T) {
 		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
 		gcOpsNoLoc := gcloud.WithCommonArgs([]string{"--project", projectId, "--format", "json"})
 
-		op1 := gcloud.Run(t, "workflows list", gcOps).Array()[0]
-		assert.Equal(workflowId, op1.Get("name").String(), "should have the right Workflow ID")
-		assert.Equal(workflowRevisionId, op1.Get("revisionId").String(), "should have the right Workflow RevisionId")
+		workflowInfo := gcloud.Run(t, "workflows describe "+workflowId, gcOps)
+		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")
 
-		op2 := gcloud.Run(t, "eventarc triggers describe "+eventArcId, gcOps)
-		pubsubTopicId := op2.Get("transport").Get("pubsub").Get("topic").String()
-		// assert.Contains(op2.Get("transport").Get("pubsub").String(), workflowId, "should have the right Workflow ID")
+		eventArcInfo := gcloud.Run(t, "eventarc triggers describe "+eventArcId, gcOps)
+		pubsubTopicId := eventArcInfo.Get("transport").Get("pubsub").Get("topic").String()
+		assert.Equal(eventArcId, eventArcInfo.Get("name").String(), "should have the right Eventarc ID")
 
-		gcloud.Run(t, "pubsub topics publish "+pubsubTopicId+" --message \"TestPubsubMessage\"", gcOpsNoLoc)
-		// assert.Equal("ENABLED", op3.Get("state").String(), "Scheduler Job should be in ENABLED status")
+		pubSubTrigger := gcloud.Run(t, "pubsub topics publish "+pubsubTopicId+" --message \"TestPubsubMessage\"", gcOpsNoLoc)
+		assert.Equal(1, len(pubSubTrigger.Get("messageIds").Array()), "Pubsub Published Messages Should be 1")
 
 		fmt.Println("Sleeping for ", waitSeconds, " seconds")
 		time.Sleep(5 * time.Second)
 
-		op4 := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
-		assert.Equal("SUCCEEDED", op4.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
-		assert.Contains("TestPubsubMessage", op4.Get("result").String(), "Workflow Job should be in SUCCEEDED status")
+		workflowExecution := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
+		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
+		assert.Contains("TestPubsubMessage", workflowExecution.Get("result").String(), "Workflow Job should be in SUCCEEDED status")
 	})
 
 	bpt.Test()
