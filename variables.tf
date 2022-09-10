@@ -78,7 +78,13 @@ variable "workflow_trigger" {
 }
 
 variable "service_account_email" {
+  description = "Service account email. Unused if service account is auto-created."
   type        = string
-  description = "Service Account email needed for the service"
-  default     = ""
+  default     = null
+}
+
+variable "service_account_create" {
+  description = "Auto-create service account."
+  type        = bool
+  default     = false
 }

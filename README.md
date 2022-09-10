@@ -98,7 +98,8 @@ Functional examples are included in the
 |------|-------------|------|---------|:--------:|
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | region | The name of the region where workflow will be created | `string` | n/a | yes |
-| service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
+| service\_account\_create | Auto-create service account. | `bool` | `false` | no |
+| service\_account\_email | Service account email. Unused if service account is auto-created. | `string` | `null` | no |
 | workflow\_description | Description for the cloud workflow | `string` | `"Sample workflow Description"` | no |
 | workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
 | workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |

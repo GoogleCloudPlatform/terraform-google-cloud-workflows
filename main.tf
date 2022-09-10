@@ -17,6 +17,15 @@
 locals {
   enable_eventarc  = var.workflow_trigger.event_arc == null ? 0 : 1
   enable_scheduler = var.workflow_trigger.cloud_scheduler == null ? 0 : 1
+  service_account_email = (
+    var.service_account_create
+    ? (
+      length(module.service_account) > 0
+      ? module.service_account[0].email
+      : null
+    )
+    : var.service_account_email
+  )
 }
 
 resource "google_eventarc_trigger" "workflow" {
@@ -63,11 +72,30 @@ resource "google_cloud_scheduler_job" "workflow" {
 
 }
 
+resource "random_string" "string" {
+  count   = var.service_account_create ? 1 : 0
+  length  = 6
+  lower   = true
+  upper   = false
+  special = false
+  numeric = false
+}
+
+module "service_account" {
+  count         = var.service_account_create ? 1 : 0
+  source        = "terraform-google-modules/service-accounts/google"
+  version       = "~> 4.1.1"
+  project_id    = var.project_id
+  prefix        = "wf-${random_string.string[0].result}"
+  names         = ["simple"]
+  project_roles = ["${var.project_id}=>roles/workflows.invoker"]
+}
+
 resource "google_workflows_workflow" "workflow" {
   name            = var.workflow_name
   region          = var.region
   description     = var.workflow_description
-  service_account = var.service_account_email
+  service_account = local.service_account_email
   project         = var.project_id
   labels          = var.workflow_labels
   source_contents = var.workflow_source
