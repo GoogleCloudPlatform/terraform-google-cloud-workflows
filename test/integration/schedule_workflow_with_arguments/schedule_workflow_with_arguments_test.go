@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package event_arc_trigger_workflow
+package schedule_workflow
 
 import (
 	"fmt"
@@ -26,7 +26,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
+func TestScheduleWorkflowWithArgs(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
@@ -37,19 +37,20 @@ func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
 		workflowId := bpt.GetStringOutput("workflow_id")
 		workflowRegion := bpt.GetStringOutput("workflow_region")
 		workflowRevisionId := bpt.GetStringOutput("workflow_revision_id")
-		eventArcId := bpt.GetStringOutput("event_arc_id")
+		schedulerJobId := bpt.GetStringOutput("scheduler_job_id")
 		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
-		gcOpsNoLoc := gcloud.WithCommonArgs([]string{"--project", projectId, "--format", "json"})
 
 		workflowInfo := gcloud.Run(t, "workflows describe "+workflowId, gcOps)
 		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")
 
-		eventArcInfo := gcloud.Run(t, "eventarc triggers describe "+eventArcId, gcOps)
-		pubsubTopicId := eventArcInfo.Get("transport").Get("pubsub").Get("topic").String()
-		assert.Equal(eventArcId, eventArcInfo.Get("name").String(), "should have the right Eventarc ID")
+		schedulerInfo := gcloud.Run(t, "scheduler jobs describe "+schedulerJobId, gcOps)
+		assert.Contains(schedulerInfo.Get("httpTarget").Get("uri").String(), workflowId, "should have the right Workflow ID")
 
-		pubSubTrigger := gcloud.Run(t, "pubsub topics publish "+pubsubTopicId+" --message \"TestPubsubMessage\"", gcOpsNoLoc)
-		assert.Equal(1, len(pubSubTrigger.Get("messageIds").Array()), "Pubsub Published Messages Should be 1")
+		fmt.Println("Sleeping for ", waitSeconds, " seconds")
+		time.Sleep(5 * time.Second)
+
+		schedulerTrigger := gcloud.Run(t, "scheduler jobs run "+schedulerJobId, gcOps)
+		assert.Equal("ENABLED", schedulerTrigger.Get("state").String(), "Scheduler Job should be in ENABLED status")
 
 		fmt.Println("Sleeping for ", waitSeconds, " seconds")
 		time.Sleep(5 * time.Second)
@@ -59,7 +60,8 @@ func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
 
 		workflowExecutionId := workflowExecution.Get("name").String()
 		workflowExecutionInfo := gcloud.Run(t, "workflows  executions describe --workflow="+workflowId+" "+workflowExecutionId, gcOps)
-		assert.Contains(workflowExecutionInfo.Get("result").String(), "TestPubsubMessage", "Workflow Job result should contain object name")
+		assert.Contains(workflowExecutionInfo.Get("result").String(), "Monday", "Workflow Job result should contain object name")
+
 	})
 
 	bpt.Test()

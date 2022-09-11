@@ -75,7 +75,11 @@ func TestGcsEventArcTriggerWorkflow(t *testing.T) {
 
 		workflowExecution := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
 		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
-		assert.Contains(filepath.Base(sampleFile), workflowExecution.Get("result").String(), "Workflow Job should be in SUCCEEDED status")
+		// assert.Contains(filepath.Base(sampleFile), workflowExecution.Get("result").String(), "Workflow Job result should contain object name")
+
+		workflowExecutionId := workflowExecution.Get("name").String()
+		workflowExecutionInfo := gcloud.Run(t, "workflows  executions describe --workflow="+workflowId+" "+workflowExecutionId, gcOps)
+		assert.Contains(workflowExecutionInfo.Get("result").String(), filepath.Base(sampleFile), "Workflow Job result should contain object name")
 	})
 
 	bpt.Test()

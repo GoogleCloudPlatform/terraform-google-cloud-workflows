@@ -53,6 +53,7 @@ variable "workflow_trigger" {
       cron                  = string
       time_zone             = string
       deadline              = string
+      argument              = optional(map(any))
       service_account_email = string
     }))
     event_arc = optional(object({

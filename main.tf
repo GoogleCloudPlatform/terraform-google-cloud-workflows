@@ -26,6 +26,11 @@ locals {
     )
     : var.service_account_email
   )
+  cloud_scheduler_args = (var.workflow_trigger.cloud_scheduler == null
+    ? null
+    : (var.workflow_trigger.cloud_scheduler.argument == null
+      ? jsonencode({})
+  : jsonencode(var.workflow_trigger.cloud_scheduler.argument)))
 }
 
 resource "google_eventarc_trigger" "workflow" {
@@ -62,7 +67,12 @@ resource "google_cloud_scheduler_job" "workflow" {
   http_target {
     http_method = "POST"
     uri         = "https://workflowexecutions.googleapis.com/v1/${google_workflows_workflow.workflow.id}/executions"
-    body        = base64encode("{\"argument\":\"{}\",\"callLogLevel\":\"CALL_LOG_LEVEL_UNSPECIFIED\"}")
+    body = base64encode(
+      jsonencode({
+        "argument" : local.cloud_scheduler_args,
+        "callLogLevel" : "CALL_LOG_LEVEL_UNSPECIFIED"
+        }
+    ))
 
     oauth_token {
       service_account_email = var.workflow_trigger.cloud_scheduler.service_account_email
