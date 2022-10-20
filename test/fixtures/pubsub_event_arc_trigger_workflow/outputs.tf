@@ -38,3 +38,8 @@ output "event_arc_id" {
   description = "Google Cloud Event Arc id"
   value       = module.cloud_workflow.event_arc_id
 }
+
+output "pubsub_topic_id" {
+  description = "Google Cloud Pubsub resource id"
+  value       = module.cloud_workflow.pubsub_topic_id
+}

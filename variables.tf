@@ -64,6 +64,7 @@ variable "workflow_trigger" {
         operator  = optional(string)
         value     = string
       }))
+      pubsub_topic_id = optional(string)
     }))
   })
 

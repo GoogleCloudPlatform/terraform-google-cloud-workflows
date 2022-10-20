@@ -38,6 +38,7 @@ func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
 		workflowRegion := bpt.GetStringOutput("workflow_region")
 		workflowRevisionId := bpt.GetStringOutput("workflow_revision_id")
 		eventArcId := bpt.GetStringOutput("event_arc_id")
+		pubsubTopicId := bpt.GetStringOutput("pubsub_topic_id")
 		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
 		gcOpsNoLoc := gcloud.WithCommonArgs([]string{"--project", projectId, "--format", "json"})
 
@@ -45,7 +46,7 @@ func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
 		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")
 
 		eventArcInfo := gcloud.Run(t, "eventarc triggers describe "+eventArcId, gcOps)
-		pubsubTopicId := eventArcInfo.Get("transport").Get("pubsub").Get("topic").String()
+		// pubsubTopicId := eventArcInfo.Get("transport").Get("pubsub").Get("topic").String()
 		assert.Equal(eventArcId, eventArcInfo.Get("name").String(), "should have the right Eventarc ID")
 
 		pubSubTrigger := gcloud.Run(t, "pubsub topics publish "+pubsubTopicId+" --message \"TestPubsubMessage\"", gcOpsNoLoc)

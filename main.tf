@@ -31,6 +31,7 @@ locals {
     : (var.workflow_trigger.cloud_scheduler.argument == null
       ? jsonencode({})
   : jsonencode(var.workflow_trigger.cloud_scheduler.argument)))
+  pubsub = var.workflow_trigger.event_arc.pubsub_topic_id == null ? [] : [{ "pubsub_topic_id" = var.workflow_trigger.event_arc.pubsub_topic_id }]
 }
 
 resource "google_eventarc_trigger" "workflow" {
@@ -47,6 +48,19 @@ resource "google_eventarc_trigger" "workflow" {
       value     = matching_criteria.value["value"]
       operator  = matching_criteria.value["operator"]
     }
+  }
+
+  dynamic "transport" {
+    for_each = local.pubsub
+    content {
+      dynamic "pubsub" {
+        for_each = local.pubsub
+        content {
+          topic = pubsub.value["pubsub_topic_id"]
+        }
+      }
+    }
+
   }
 
   destination {

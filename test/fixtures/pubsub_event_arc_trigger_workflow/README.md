@@ -15,6 +15,7 @@ This example illustrates how to use the `cloud-workflow` module.
 |------|-------------|
 | event\_arc\_id | Google Cloud Event Arc id |
 | project\_id | Google Cloud project in which the service was created |
+| pubsub\_topic\_id | Google Cloud Pubsub resource id |
 | workflow\_id | The id  of the workflow. |
 | workflow\_region | The id  of the workflow. |
 | workflow\_revision\_id | The revision id of the workflow. |

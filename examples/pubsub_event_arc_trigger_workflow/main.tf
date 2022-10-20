@@ -17,6 +17,11 @@ data "google_compute_default_service_account" "default" {
   project = var.project_id
 }
 
+resource "google_pubsub_topic" "event_arc" {
+  name    = "test-pubsub-topic"
+  project = var.project_id
+}
+
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
   version       = "~> 4.1.1"
@@ -29,7 +34,7 @@ module "service_account" {
 module "cloud_workflow" {
   source                = "../.."
   project_id            = var.project_id
-  workflow_name         = "wf-eventarc"
+  workflow_name         = "wf-pubsub-eventarc"
   region                = "us-central1"
   service_account_email = module.service_account.email
   workflow_trigger = {
@@ -40,6 +45,7 @@ module "cloud_workflow" {
         attribute = "type"
         value     = "google.cloud.pubsub.topic.v1.messagePublished"
       }]
+      pubsub_topic_id = google_pubsub_topic.event_arc.id
     }
   }
   workflow_source = <<-EOF
@@ -51,7 +57,7 @@ module "cloud_workflow" {
     steps:
       - decode_pubsub_message:
           assign:
-            - base64: $${base64.decode(event.data.data)}
+            - base64: $${base64.decode(event.data.message.data)}
             - message: $${text.decode(base64)}
       - return_pubsub_message:
           return: $${message}
