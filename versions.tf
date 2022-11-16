@@ -15,7 +15,7 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -24,7 +24,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/cloud-workflow/v0.0.1"
+    module_name = "blueprints/terraform/terraform-google-cloud-workflow/v0.0.1"
   }
-  experiments = [module_variable_optional_attrs]
 }
