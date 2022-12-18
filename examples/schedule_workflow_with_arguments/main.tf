@@ -39,7 +39,7 @@ module "cloud_workflow" {
       time_zone             = "America/New_York"
       deadline              = "320s"
       service_account_email = data.google_compute_default_service_account.default.email
-      argument              = { "searchTerm" : "Monday" }
+      argument              = jsonencode({ "searchTerm" : "Monday" })
     }
   }
   workflow_source = <<-EOF
