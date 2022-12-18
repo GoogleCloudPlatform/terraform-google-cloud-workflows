@@ -26,12 +26,12 @@ locals {
     )
     : var.service_account_email
   )
-  cloud_scheduler_args = (var.workflow_trigger.cloud_scheduler == null
-    ? null
-    : (var.workflow_trigger.cloud_scheduler.argument == null
-      ? jsonencode({})
-  : jsonencode(var.workflow_trigger.cloud_scheduler.argument)))
-  pubsub = var.workflow_trigger.event_arc.pubsub_topic_id == null ? [] : [{ "pubsub_topic_id" = var.workflow_trigger.event_arc.pubsub_topic_id }]
+  cloud_scheduler_args = (
+    try(var.workflow_trigger.cloud_scheduler.argument, null) == null ?
+    jsonencode({}) :
+    var.workflow_trigger.cloud_scheduler.argument
+  )
+  pubsub = try(var.workflow_trigger.event_arc.pubsub_topic_id, null) == null ? [] : [{ "pubsub_topic_id" = var.workflow_trigger.event_arc.pubsub_topic_id }]
 }
 
 resource "google_eventarc_trigger" "workflow" {

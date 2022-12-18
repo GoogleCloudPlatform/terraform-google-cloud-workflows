@@ -20,6 +20,10 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 4.0"
     }
+
+    random = {
+      version = "~> 3.4.3"
+    }
   }
   required_version = ">= 0.13"
 }
