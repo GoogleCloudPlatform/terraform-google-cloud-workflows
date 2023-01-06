@@ -34,6 +34,7 @@ locals {
   pubsub = try(var.workflow_trigger.event_arc.pubsub_topic_id, null) == null ? [] : [{ "pubsub_topic_id" = var.workflow_trigger.event_arc.pubsub_topic_id }]
 }
 
+// test
 resource "google_eventarc_trigger" "workflow" {
   count           = local.enable_eventarc
   project         = var.project_id
