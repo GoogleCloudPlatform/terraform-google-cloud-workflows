@@ -18,7 +18,9 @@ data "google_compute_default_service_account" "default" {
 }
 
 module "cloud_workflow" {
-  source                 = "../.."
+  source  = "GoogleCloudPlatform/cloud-workflows/google"
+  version = "~> 0.1"
+
   project_id             = var.project_id
   workflow_name          = "wf-sample-with-sa"
   region                 = "us-central1"
