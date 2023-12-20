@@ -13,7 +13,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 ```hcl
 module "cloud_workflow" {
-  source  = "terraform-google-modules/cloud-workflow/google"
+  source  = "GoogleCloudPlatform/cloud-workflow/google"
   version = "~> 0.1"
 
   workflow_name         = "wf-sample"
@@ -52,7 +52,7 @@ EOF
 
 ```hcl
 module "cloud_workflow" {
-  source  = "terraform-google-modules/cloud-workflow/google"
+  source  = "GoogleCloudPlatform/cloud-workflow/google"
   version = "~> 0.1"
 
   workflow_name         = "wf-sample"
