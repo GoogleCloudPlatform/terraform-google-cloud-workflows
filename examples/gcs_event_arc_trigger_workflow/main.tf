@@ -74,7 +74,7 @@ module "service_account" {
 
 module "gcs_buckets" {
   source          = "terraform-google-modules/cloud-storage/google"
-  version         = "~> 3.4.0"
+  version         = "~> 5.0.0"
   location        = "us-central1"
   project_id      = var.project_id
   names           = ["wf-bucket"]
