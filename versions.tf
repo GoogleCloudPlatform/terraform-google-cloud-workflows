@@ -19,16 +19,12 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 3.53, < 5.0"
+      version = ">= 5.7.0, <= 5.39.1"
     }
 
     random = {
       source  = "hashicorp/random"
       version = "~> 3.4.3"
     }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-workflow/v0.1.0"
   }
 }

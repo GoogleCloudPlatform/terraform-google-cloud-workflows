@@ -46,6 +46,12 @@ variable "workflow_labels" {
   default     = {}
 }
 
+variable "workflow_user_env_vars" {
+  type        = map(string)
+  description = "A set of key/value env vars pairs to assign to the workflow"
+  default     = {}
+}
+
 variable "workflow_trigger" {
   type = object({
     cloud_scheduler = optional(object({
