@@ -83,6 +83,7 @@ variable "workflow_trigger" {
     )
     error_message = "Either cloud_scheduler OR event_arc information is supported."
   }
+  default = null
 }
 
 variable "service_account_email" {
