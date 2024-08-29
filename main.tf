@@ -108,7 +108,7 @@ resource "random_string" "string" {
 module "service_account" {
   count         = var.service_account_create ? 1 : 0
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.3.0"
   project_id    = var.project_id
   prefix        = "wf-${random_string.string[0].result}"
   names         = ["simple"]
