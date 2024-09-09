@@ -84,6 +84,7 @@ spec:
             time_zone             = string
             deadline              = string
             argument              = optional(string)
+            region                = optional(string)
             service_account_email = string
           }))
           event_arc = optional(object({
@@ -103,6 +104,8 @@ spec:
     description: Google Event Arc id
   - name: scheduler_job_id
     description: Google Cloud scheduler job id
+  - name: scheduler_rgion
+    description: Google Cloud scheduler region
   - name: workflow_id
     description: Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}}
   - name: workflow_region

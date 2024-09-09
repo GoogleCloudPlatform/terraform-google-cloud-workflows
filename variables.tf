@@ -55,6 +55,7 @@ variable "workflow_trigger" {
       deadline              = string
       argument              = optional(string)
       service_account_email = string
+      region                = optional(string)
     }))
     event_arc = optional(object({
       name                  = string

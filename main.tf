@@ -76,7 +76,7 @@ resource "google_cloud_scheduler_job" "workflow" {
   schedule         = var.workflow_trigger.cloud_scheduler.cron
   time_zone        = var.workflow_trigger.cloud_scheduler.time_zone
   attempt_deadline = var.workflow_trigger.cloud_scheduler.deadline
-  region           = var.region
+  region           = try(var.workflow_trigger.cloud_scheduler.region, var.region)
 
   http_target {
     http_method = "POST"

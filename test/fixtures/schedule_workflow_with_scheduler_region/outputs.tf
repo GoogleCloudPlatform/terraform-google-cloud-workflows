@@ -15,31 +15,31 @@
  */
 
 output "workflow_id" {
-  value       = google_workflows_workflow.workflow.id
-  description = "Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}}"
+  description = "The id  of the workflow."
+  value       = module.cloud_workflow.workflow_id
 }
 
 output "workflow_revision_id" {
-  value       = google_workflows_workflow.workflow.revision_id
-  description = "The revision of the workflow. A new one is generated if the service account or source contents is changed."
+  description = "The revision id of the workflow."
+  value       = module.cloud_workflow.workflow_revision_id
 }
 
 output "workflow_region" {
-  value       = google_workflows_workflow.workflow.region
   description = "The region of the workflow."
+  value       = module.cloud_workflow.workflow_region
+}
+
+output "project_id" {
+  description = "Google Cloud project in which the service was created"
+  value       = var.project_id
 }
 
 output "scheduler_job_id" {
   description = "Google Cloud scheduler job id"
-  value       = local.enable_scheduler == 1 ? google_cloud_scheduler_job.workflow[0].id : null
+  value       = module.cloud_workflow.scheduler_job_id
 }
 
 output "scheduler_region" {
   description = "Google Cloud scheduler region"
-  value       = local.enable_scheduler == 1 ? google_cloud_scheduler_job.workflow[0].region : null
-}
-
-output "event_arc_id" {
-  description = "Google Event Arc id"
-  value       = local.enable_eventarc == 1 ? google_eventarc_trigger.workflow[0].id : null
+  value       = module.cloud_workflow.scheduler_region
 }
