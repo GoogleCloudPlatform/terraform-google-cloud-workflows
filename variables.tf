@@ -61,10 +61,12 @@ variable "workflow_trigger" {
       deadline              = string
       argument              = optional(string)
       service_account_email = string
+      region                = string
     }))
     event_arc = optional(object({
       name                  = string
       service_account_email = string
+      region                = string
       matching_criteria = set(object({
         attribute = string
         operator  = optional(string)

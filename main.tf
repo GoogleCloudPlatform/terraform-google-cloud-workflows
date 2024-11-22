@@ -38,7 +38,7 @@ resource "google_eventarc_trigger" "workflow" {
   count           = local.enable_eventarc
   project         = var.project_id
   name            = var.workflow_trigger.event_arc.name
-  location        = var.region
+  location        = var.workflow_trigger.event_arc.region
   service_account = var.workflow_trigger.event_arc.service_account_email
 
   dynamic "matching_criteria" {
@@ -76,7 +76,7 @@ resource "google_cloud_scheduler_job" "workflow" {
   schedule         = var.workflow_trigger.cloud_scheduler.cron
   time_zone        = var.workflow_trigger.cloud_scheduler.time_zone
   attempt_deadline = var.workflow_trigger.cloud_scheduler.deadline
-  region           = var.region
+  region           = var.workflow_trigger.cloud_scheduler.region
 
   http_target {
     http_method = "POST"
