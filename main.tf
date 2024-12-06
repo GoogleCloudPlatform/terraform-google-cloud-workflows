@@ -123,5 +123,11 @@ resource "google_workflows_workflow" "workflow" {
   project         = var.project_id
   labels          = var.workflow_labels
   source_contents = var.workflow_source
-  user_env_vars   = var.workflow_user_env_vars
+  user_env_vars   = var.workflow_user_env_vars 
+
+  lifecycle {
+    ignore_changes = [
+      user_env_vars
+    ]
+  }
 }
