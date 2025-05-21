@@ -94,10 +94,10 @@ variable "service_account_create" {
 variable "call_log_level" {
   description = "Describe the level of platform logging to apply to calls and call responses during executions of this workflow. Possible values are: CALL_LOG_LEVEL_UNSPECIFIED, LOG_ALL_CALLS, LOG_ERRORS_ONLY, LOG_NONE."
   type        = string
-  default     = null
+  default     = "CALL_LOG_LEVEL_UNSPECIFIED"
 
   validation {
-    condition     = var.call_log_level == null || contains(["CALL_LOG_LEVEL_UNSPECIFIED", "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_NONE"], var.call_log_level)
+    condition     = contains(["CALL_LOG_LEVEL_UNSPECIFIED", "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_NONE"], var.call_log_level)
     error_message = "Invalid value for call_log_level. Possible values are: CALL_LOG_LEVEL_UNSPECIFIED, LOG_ALL_CALLS, LOG_ERRORS_ONLY, LOG_NONE."
   }
 }
@@ -105,10 +105,10 @@ variable "call_log_level" {
 variable "execution_history_level" {
   description = "Describes the level of execution history to be stored for this workflow. Possible values are: EXECUTION_HISTORY_LEVEL_UNSPECIFIED, EXECUTION_HISTORY_BASIC, EXECUTION_HISTORY_DETAILED."
   type        = string
-  default     = null
+  default     = "EXECUTION_HISTORY_LEVEL_UNSPECIFIED"
 
   validation {
-    condition     = var.execution_history_level == null || contains(["EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED"], var.execution_history_level)
+    condition     = contains(["EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED"], var.execution_history_level)
     error_message = "Invalid value for call_log_level. Possible values are: EXECUTION_HISTORY_LEVEL_UNSPECIFIED, EXECUTION_HISTORY_BASIC, EXECUTION_HISTORY_DETAILED."
   }
 }
