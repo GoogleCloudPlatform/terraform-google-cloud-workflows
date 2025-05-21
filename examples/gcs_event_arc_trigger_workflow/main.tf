@@ -64,7 +64,7 @@ resource "random_string" "string" {
 
 module "service_account" {
   source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.1.1"
+  version    = "~> 4.5.3"
   project_id = var.project_id
   prefix     = "gcs-eventarc-workflow"
   names      = ["simple"]
@@ -74,7 +74,7 @@ module "service_account" {
 
 module "gcs_buckets" {
   source          = "terraform-google-modules/cloud-storage/google"
-  version         = "~> 3.4.0"
+  version         = "~> 6.1.0"
   location        = "us-central1"
   project_id      = var.project_id
   names           = ["wf-bucket"]
@@ -92,6 +92,7 @@ module "cloud_workflow" {
   workflow_name         = "wf-gcs-eventarc"
   region                = "us-central1"
   service_account_email = module.service_account.email
+  deletion_protection   = false
   workflow_trigger = {
     event_arc = {
       name                  = "trigger-gcs-workflow-tf"

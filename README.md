@@ -96,10 +96,14 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| call\_log\_level | Describe the level of platform logging to apply to calls and call responses during executions of this workflow. Possible values are: CALL\_LOG\_LEVEL\_UNSPECIFIED, LOG\_ALL\_CALLS, LOG\_ERRORS\_ONLY, LOG\_NONE. | `string` | `"CALL_LOG_LEVEL_UNSPECIFIED"` | no |
+| deletion\_protection | Whether Terraform will be prevented from destroying the workflow. Defaults to true. | `bool` | `null` | no |
+| execution\_history\_level | Describes the level of execution history to be stored for this workflow. Possible values are: EXECUTION\_HISTORY\_LEVEL\_UNSPECIFIED, EXECUTION\_HISTORY\_BASIC, EXECUTION\_HISTORY\_DETAILED. | `string` | `"EXECUTION_HISTORY_LEVEL_UNSPECIFIED"` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | region | The name of the region where workflow will be created | `string` | n/a | yes |
 | service\_account\_create | Auto-create service account. | `bool` | `false` | no |
 | service\_account\_email | Service account email. Unused if service account is auto-created. | `string` | `null` | no |
+| user\_env\_vars | User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 4KiB. Keys cannot be empty strings and cannot start with "GOOGLE" or "WORKFLOWS". | `map(string)` | `{}` | no |
 | workflow\_description | Description for the cloud workflow | `string` | `"Sample workflow Description"` | no |
 | workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
 | workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |
@@ -126,8 +130,8 @@ These sections describe requirements for using this module.
 
 The following dependencies must be available:
 
-- [Terraform][terraform] v0.13
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.0
+- [Terraform][terraform] v1.3
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v6.26
 
 ### Service Account
 
