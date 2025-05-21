@@ -96,9 +96,9 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| call\_log\_level | Describe the level of platform logging to apply to calls and call responses during executions of this workflow. Possible values are: CALL\_LOG\_LEVEL\_UNSPECIFIED, LOG\_ALL\_CALLS, LOG\_ERRORS\_ONLY, LOG\_NONE. | `string` | `null` | no |
+| call\_log\_level | Describe the level of platform logging to apply to calls and call responses during executions of this workflow. Possible values are: CALL\_LOG\_LEVEL\_UNSPECIFIED, LOG\_ALL\_CALLS, LOG\_ERRORS\_ONLY, LOG\_NONE. | `string` | `"CALL_LOG_LEVEL_UNSPECIFIED"` | no |
 | deletion\_protection | Whether Terraform will be prevented from destroying the workflow. Defaults to true. | `bool` | `null` | no |
-| execution\_history\_level | Describes the level of execution history to be stored for this workflow. Possible values are: EXECUTION\_HISTORY\_LEVEL\_UNSPECIFIED, EXECUTION\_HISTORY\_BASIC, EXECUTION\_HISTORY\_DETAILED. | `string` | `null` | no |
+| execution\_history\_level | Describes the level of execution history to be stored for this workflow. Possible values are: EXECUTION\_HISTORY\_LEVEL\_UNSPECIFIED, EXECUTION\_HISTORY\_BASIC, EXECUTION\_HISTORY\_DETAILED. | `string` | `"EXECUTION_HISTORY_LEVEL_UNSPECIFIED"` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | region | The name of the region where workflow will be created | `string` | n/a | yes |
 | service\_account\_create | Auto-create service account. | `bool` | `false` | no |
