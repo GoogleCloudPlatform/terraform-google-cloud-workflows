@@ -18,13 +18,18 @@ data "google_compute_default_service_account" "default" {
 }
 
 module "cloud_workflow" {
-  source  = "GoogleCloudPlatform/cloud-workflows/google"
-  version = "~> 0.1"
+  source = "../.."
 
-  project_id             = var.project_id
-  workflow_name          = "wf-sample-with-sa"
-  region                 = "us-central1"
-  service_account_create = true
+  project_id              = var.project_id
+  workflow_name           = "wf-sample-with-sa"
+  region                  = "us-central1"
+  service_account_create  = true
+  call_log_level          = "CALL_LOG_LEVEL_UNSPECIFIED"
+  execution_history_level = "EXECUTION_HISTORY_BASIC"
+  user_env_vars = {
+    key = "value1"
+  }
+  deletion_protection = false
   workflow_trigger = {
     cloud_scheduler = {
       name                  = "workflow-job-with-sa"

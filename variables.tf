@@ -90,3 +90,37 @@ variable "service_account_create" {
   type        = bool
   default     = false
 }
+
+variable "call_log_level" {
+  description = "Describe the level of platform logging to apply to calls and call responses during executions of this workflow. Possible values are: CALL_LOG_LEVEL_UNSPECIFIED, LOG_ALL_CALLS, LOG_ERRORS_ONLY, LOG_NONE."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.call_log_level == null || contains(["CALL_LOG_LEVEL_UNSPECIFIED", "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_NONE"], var.call_log_level)
+    error_message = "Invalid value for call_log_level. Possible values are: CALL_LOG_LEVEL_UNSPECIFIED, LOG_ALL_CALLS, LOG_ERRORS_ONLY, LOG_NONE."
+  }
+}
+
+variable "execution_history_level" {
+  description = "Describes the level of execution history to be stored for this workflow. Possible values are: EXECUTION_HISTORY_LEVEL_UNSPECIFIED, EXECUTION_HISTORY_BASIC, EXECUTION_HISTORY_DETAILED."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.execution_history_level == null || contains(["EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED"], var.execution_history_level)
+    error_message = "Invalid value for call_log_level. Possible values are: EXECUTION_HISTORY_LEVEL_UNSPECIFIED, EXECUTION_HISTORY_BASIC, EXECUTION_HISTORY_DETAILED."
+  }
+}
+
+variable "user_env_vars" {
+  description = "User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 4KiB. Keys cannot be empty strings and cannot start with \"GOOGLE\" or \"WORKFLOWS\"."
+  type        = map(string)
+  default     = {}
+}
+
+variable "deletion_protection" {
+  description = "Whether Terraform will be prevented from destroying the workflow. Defaults to true."
+  type        = bool
+  default     = null
+}

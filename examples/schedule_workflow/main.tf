@@ -19,7 +19,7 @@ data "google_compute_default_service_account" "default" {
 
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.5.3"
   project_id    = var.project_id
   prefix        = "sa-workflow"
   names         = ["simple"]
@@ -27,13 +27,18 @@ module "service_account" {
 }
 
 module "cloud_workflow" {
-  source  = "GoogleCloudPlatform/cloud-workflows/google"
-  version = "~> 0.1"
+  source = "../.."
 
-  project_id            = var.project_id
-  workflow_name         = "wf-sample"
-  region                = "us-central1"
-  service_account_email = module.service_account.email
+  project_id              = var.project_id
+  workflow_name           = "wf-sample"
+  region                  = "us-central1"
+  service_account_email   = module.service_account.email
+  call_log_level          = "CALL_LOG_LEVEL_UNSPECIFIED"
+  execution_history_level = "EXECUTION_HISTORY_BASIC"
+  user_env_vars = {
+    key = "value1"
+  }
+  deletion_protection = false
   workflow_trigger = {
     cloud_scheduler = {
       name                  = "workflow-job"
