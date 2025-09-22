@@ -108,7 +108,7 @@ resource "random_string" "string" {
 module "service_account" {
   count         = var.service_account_create ? 1 : 0
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.5.3"
   project_id    = var.project_id
   prefix        = "wf-${random_string.string[0].result}"
   names         = ["simple"]
@@ -116,11 +116,15 @@ module "service_account" {
 }
 
 resource "google_workflows_workflow" "workflow" {
-  name            = var.workflow_name
-  region          = var.region
-  description     = var.workflow_description
-  service_account = local.service_account_email
-  project         = var.project_id
-  labels          = var.workflow_labels
-  source_contents = var.workflow_source
+  name                    = var.workflow_name
+  region                  = var.region
+  description             = var.workflow_description
+  service_account         = local.service_account_email
+  project                 = var.project_id
+  labels                  = var.workflow_labels
+  source_contents         = var.workflow_source
+  call_log_level          = var.call_log_level
+  execution_history_level = var.execution_history_level
+  user_env_vars           = var.user_env_vars
+  deletion_protection     = var.deletion_protection
 }

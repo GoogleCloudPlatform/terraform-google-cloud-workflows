@@ -24,7 +24,7 @@ resource "google_pubsub_topic" "event_arc" {
 
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.5.3"
   project_id    = var.project_id
   prefix        = "eventarc-workflow"
   names         = ["simple"]
@@ -39,6 +39,7 @@ module "cloud_workflow" {
   workflow_name         = "wf-pubsub-eventarc"
   region                = "us-central1"
   service_account_email = module.service_account.email
+  deletion_protection   = false
   workflow_trigger = {
     event_arc = {
       name                  = "trigger-pubsub-workflow-tf"
