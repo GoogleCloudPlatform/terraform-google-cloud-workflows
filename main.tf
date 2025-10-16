@@ -72,7 +72,7 @@ resource "google_cloud_scheduler_job" "workflow" {
   count            = local.enable_scheduler
   project          = var.project_id
   name             = var.workflow_trigger.cloud_scheduler.name
-  description      = "Cloud Scheduler for Workflow Jpb"
+  description      = "Cloud Scheduler for Workflow Job"
   schedule         = var.workflow_trigger.cloud_scheduler.cron
   time_zone        = var.workflow_trigger.cloud_scheduler.time_zone
   attempt_deadline = var.workflow_trigger.cloud_scheduler.deadline
