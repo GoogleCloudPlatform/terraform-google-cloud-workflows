@@ -27,11 +27,11 @@ variable "workflow_name" {
 variable "workflow_description" {
   description = "Description for the cloud workflow"
   type        = string
-  default     = "Sample workflow Description"
+  default     = ""
 }
 
-variable "region" {
-  description = "The name of the region where workflow will be created"
+variable "location" {
+  description = "The name of the location where workflow will be created"
   type        = string
 }
 
@@ -47,13 +47,7 @@ variable "workflow_labels" {
 }
 
 variable "service_account_email" {
-  description = "Service account email. Unused if service account is auto-created."
+  description = "Service account email."
   type        = string
   default     = null
-}
-
-variable "service_account_create" {
-  description = "Auto-create service account."
-  type        = bool
-  default     = false
 }

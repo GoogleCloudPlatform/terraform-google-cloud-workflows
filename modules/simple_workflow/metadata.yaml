@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows.git
       sourceType: git
-      dir: /modules/simple-workflow
+      dir: /modules/simple_workflow
     version: 0.1.0
     actuationTool:
       flavor: Terraform
@@ -57,9 +57,9 @@ spec:
       - name: workflow_description
         description: Description for the cloud workflow
         varType: string
-        defaultValue: Sample workflow Description
-      - name: region
-        description: The name of the region where workflow will be created
+        defaultValue: ""
+      - name: location
+        description: The name of the location where workflow will be created
         varType: string
         required: true
       - name: workflow_source
@@ -71,7 +71,7 @@ spec:
         varType: map(string)
         defaultValue: {}
       - name: service_account_email
-        description: Service account email. Unused if service account is auto-created.
+        description: Service account email.
         varType: string
         connections:
           - source:
@@ -79,25 +79,17 @@ spec:
               version: ">= 4.4"
             spec:
               outputExpr: email
-      - name: service_account_create
-        description: Auto-create service account.
-        varType: bool
-        defaultValue: false
     outputs:
+      - name: revision_id
+        description: The revision of the workflow. A new one is generated if the service account or source contents is changed.
       - name: workflow_id
         description: Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}}
-        type: string
-      - name: workflow_region
-        description: The region of the workflow.
-        type: string
-      - name: workflow_revision_id
-        description: The revision of the workflow. A new one is generated if the service account or source contents is changed.
         type: string
   requirements:
     roles:
       - level: Project
         roles:
-          - roles/owner
+          - roles/workflows.invoker
     services:
       - iam.googleapis.com
       - cloudresourcemanager.googleapis.com
@@ -109,5 +101,3 @@ spec:
     providerVersions:
       - source: hashicorp/google
         version: ">= 3.53, < 5.0"
-      - source: hashicorp/random
-        version: ~> 3.4.3

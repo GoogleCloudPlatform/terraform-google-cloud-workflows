@@ -24,27 +24,29 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows.git
       sourceType: git
-      dir: /modules/simple-workflow
+      dir: /modules/simple_workflow
   ui:
     input:
       variables:
+        location:
+          name: location
+          title: Location
         project_id:
           name: project_id
           title: Project Id
         region:
           name: region
           title: Region
-        service_account_create:
-          name: service_account_create
-          title: Service Account Create
         service_account_email:
           name: service_account_email
           title: Service Account Email
-          regexValidation: "^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\\.iam\\.gserviceaccount\\.com$"
+          regexValidation: ^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
           validation: "Service account must be a valid email address in the format: SA_NAME@PROJECT_ID.iam.gserviceaccount.com."
+          level: 1
         workflow_description:
           name: workflow_description
           title: Workflow Description
+          level: 1
         workflow_labels:
           name: workflow_labels
           title: Workflow Labels

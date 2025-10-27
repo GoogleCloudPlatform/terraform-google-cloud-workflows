@@ -46,11 +46,10 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| location | The name of the location where workflow will be created | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| region | The name of the region where workflow will be created | `string` | n/a | yes |
-| service\_account\_create | Auto-create service account. | `bool` | `false` | no |
-| service\_account\_email | Service account email. Unused if service account is auto-created. | `string` | `null` | no |
-| workflow\_description | Description for the cloud workflow | `string` | `"Sample workflow Description"` | no |
+| service\_account\_email | Service account email. | `string` | `null` | no |
+| workflow\_description | Description for the cloud workflow | `string` | `""` | no |
 | workflow\_labels | A set of key/value label pairs to assign to the workflow | `map(string)` | `{}` | no |
 | workflow\_name | The name of the cloud workflow to create | `string` | n/a | yes |
 | workflow\_source | Workflow YAML code to be executed. The size limit is 32KB. | `string` | n/a | yes |
@@ -59,9 +58,8 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| revision\_id | The revision of the workflow. A new one is generated if the service account or source contents is changed. |
 | workflow\_id | Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}} |
-| workflow\_region | The region of the workflow. |
-| workflow\_revision\_id | The revision of the workflow. A new one is generated if the service account or source contents is changed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

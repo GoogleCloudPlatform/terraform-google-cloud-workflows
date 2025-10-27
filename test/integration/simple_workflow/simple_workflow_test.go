@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package simple_workflow
+package simple_workflow_with_autocreate_sa
 
 import (
 	"fmt"
@@ -35,9 +35,8 @@ func TestSimpleWorkflow(t *testing.T) {
 
 		projectId := bpt.GetStringOutput("project_id")
 		workflowId := bpt.GetStringOutput("workflow_id")
-		workflowRegion := bpt.GetStringOutput("workflow_region")
-		workflowRevisionId := bpt.GetStringOutput("workflow_revision_id")
-		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
+		workflowRevisionId := bpt.GetStringOutput("revision_id")
+		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", "us-central1", "--format", "json"})
 
 		workflowInfo := gcloud.Run(t, "workflows describe "+workflowId, gcOps)
 		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")

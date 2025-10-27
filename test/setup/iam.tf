@@ -15,9 +15,17 @@
  */
 
 locals {
-  int_required_roles = [
-    "roles/owner"
-  ]
+
+  per_module_roles = {
+    simple_workflow = [
+      "roles/workflows.invoker"
+    ],
+    root = [
+      "roles/owner"
+    ]
+  }
+
+  int_required_roles = flatten(values(local.per_module_roles))
 }
 
 resource "google_service_account" "int_test" {

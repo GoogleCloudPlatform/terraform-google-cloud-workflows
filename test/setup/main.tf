@@ -14,6 +14,32 @@
  * limitations under the License.
  */
 
+locals {
+  per_module_services = {
+    simple_workflow = [
+      "iam.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "workflows.googleapis.com",
+      "logging.googleapis.com",
+      "storage.googleapis.com",
+    ],
+    root = [
+      "iam.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "workflows.googleapis.com",
+      "cloudscheduler.googleapis.com",
+      "eventarc.googleapis.com",
+      "pubsub.googleapis.com",
+      "logging.googleapis.com",
+      "storage.googleapis.com",
+    ]
+  }
+}
+
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 13.0"
@@ -25,16 +51,5 @@ module "project" {
   billing_account         = var.billing_account
   default_service_account = "keep"
 
-  activate_apis = [
-    "iam.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "workflows.googleapis.com",
-    "cloudscheduler.googleapis.com",
-    "eventarc.googleapis.com",
-    "pubsub.googleapis.com",
-    "logging.googleapis.com",
-    "storage.googleapis.com",
-  ]
+  activate_apis = flatten(values(local.per_module_services))
 }

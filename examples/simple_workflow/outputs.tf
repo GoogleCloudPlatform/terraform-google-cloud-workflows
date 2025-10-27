@@ -19,12 +19,12 @@ output "workflow_id" {
   value       = module.standalone_workflow.workflow_id
 }
 
-output "workflow_region" {
-  description = "The id  of the workflow."
-  value       = module.standalone_workflow.workflow_region
+output "revision_id" {
+  description = "The revision_id  of the workflow."
+  value       = module.standalone_workflow.revision_id
 }
 
-output "workflow_revision_id" {
-  description = "The revision_id  of the workflow."
-  value       = module.standalone_workflow.workflow_revision_id
+output "project_id" {
+  description = "Google Cloud project in which the workflow is deployed"
+  value       = var.project_id
 }

@@ -19,12 +19,7 @@ output "workflow_id" {
   description = "Workflow identifier for the resource with format projects/{{project}}/locations/{{region}}/workflows/{{name}}"
 }
 
-output "workflow_revision_id" {
+output "revision_id" {
   value       = google_workflows_workflow.simple_workflow.revision_id
   description = "The revision of the workflow. A new one is generated if the service account or source contents is changed."
-}
-
-output "workflow_region" {
-  value       = google_workflows_workflow.simple_workflow.region
-  description = "The region of the workflow."
 }

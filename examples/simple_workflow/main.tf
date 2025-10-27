@@ -28,9 +28,8 @@ module "standalone_workflow" {
 
   project_id            = var.project_id
   workflow_name         = "standalone-workflow"
-  region                = "us-central1"
+  location              = "us-central1"
   service_account_email = module.service_account.email
-  service_account_create = true
   workflow_source = <<-EOF
   # This is a sample workflow that simply reads wikipedia
   # Note that $$ is needed for Terraform

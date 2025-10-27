@@ -9,8 +9,8 @@
 
 | Name | Description |
 |------|-------------|
+| project\_id | Google Cloud project in which the workflow is deployed |
+| revision\_id | The revision\_id  of the workflow. |
 | workflow\_id | The id  of the workflow. |
-| workflow\_region | The id  of the workflow. |
-| workflow\_revision\_id | The revision\_id  of the workflow. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
