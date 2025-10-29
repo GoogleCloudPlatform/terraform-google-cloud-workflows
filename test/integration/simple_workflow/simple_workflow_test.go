@@ -33,7 +33,7 @@ func TestSimpleWorkflow(t *testing.T) {
 		waitSeconds := 5
 		bpt.DefaultVerify(assert)
 
-		projectId := bpt.GetStringOutput("project_id")
+		projectId := bpt.GetTFSetupStringOutput("project_id")
 		workflowId := bpt.GetStringOutput("workflow_id")
 		workflowRevisionId := bpt.GetStringOutput("revision_id")
 		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", "us-central1", "--format", "json"})

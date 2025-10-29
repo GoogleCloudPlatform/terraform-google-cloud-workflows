@@ -18,7 +18,8 @@ locals {
 
   per_module_roles = {
     simple_workflow = [
-      "roles/workflows.invoker"
+      "roles/workflows.invoker",
+      "roles/workflows.admin"
     ],
     root = [
       "roles/owner"

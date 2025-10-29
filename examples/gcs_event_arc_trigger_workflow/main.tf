@@ -69,6 +69,7 @@ module "service_account" {
   prefix     = "gcs-eventarc-workflow"
   names      = ["simple"]
   project_roles = ["${var.project_id}=>roles/workflows.invoker",
+  "${var.project_id}=>roles/eventarc.serviceAgent",
   "${var.project_id}=>roles/eventarc.eventReceiver"]
 }
 
