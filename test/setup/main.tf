@@ -53,3 +53,10 @@ module "project" {
 
   activate_apis = flatten(values(local.per_module_services))
 }
+
+
+# Wait after APIs are enabled to give time for them to spin up
+resource "time_sleep" "wait_after_apis" {
+  create_duration = "120s"
+  depends_on      = [module.project]
+}
