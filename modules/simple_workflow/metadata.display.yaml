@@ -1,0 +1,60 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-workflow-simple-workflow-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: terraform-google-cloud-workflow-simple
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows.git
+      sourceType: git
+      dir: /modules/simple_workflow
+  ui:
+    input:
+      variables:
+        location:
+          name: location
+          title: Location
+        project_id:
+          name: project_id
+          title: Project Id
+        region:
+          name: region
+          title: Region
+        service_account_email:
+          name: service_account_email
+          title: Service Account Email
+          regexValidation: ^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
+          validation: "Service account must be a valid email address in the format: SA_NAME@PROJECT_ID.iam.gserviceaccount.com."
+          level: 1
+        workflow_description:
+          name: workflow_description
+          title: Workflow Description
+          level: 1
+        workflow_labels:
+          name: workflow_labels
+          title: Workflow Labels
+        workflow_name:
+          name: workflow_name
+          title: Workflow Name
+          regexValidation: ^[a-zA-Z]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$
+          validation: Name must be letters, numbers, hyphens and underscores, start with a letter and end with either a letter or number.
+        workflow_source:
+          name: workflow_source
+          title: Workflow Source
