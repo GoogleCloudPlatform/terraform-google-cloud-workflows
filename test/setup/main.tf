@@ -41,22 +41,42 @@ locals {
 }
 
 module "project" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 13.0"
-
+  source                  = "terraform-google-modules/project-factory/google"
+  version                 = "~> 13.0"
   name                    = "ci-cloud-workflow"
   random_project_id       = "true"
   org_id                  = var.org_id
   folder_id               = var.folder_id
   billing_account         = var.billing_account
   default_service_account = "keep"
-
-  activate_apis = flatten(values(local.per_module_services))
+  activate_apis           = flatten(values(local.per_module_services))
 }
 
+resource "google_project_service_identity" "eventarc_sa" {
+  provider = google-beta
+  project  = module.project.project_id
+  service  = "eventarc.googleapis.com"
+
+  depends_on = [module.project]
+}
+
+# Wait after service identity is created to allow for propagation.
+resource "time_sleep" "wait_after_eventarc_sa_creation" {
+  create_duration = "60s"
+
+  depends_on = [google_project_service_identity.eventarc_sa]
+}
+
+resource "google_project_iam_member" "eventarc_service_agent" {
+  project = module.project.project_id
+  role    = "roles/eventarc.serviceAgent"
+  member  = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
+
+  depends_on = [time_sleep.wait_after_eventarc_sa_creation]
+}
 
 # Wait after APIs are enabled to give time for them to spin up
 resource "time_sleep" "wait_after_apis" {
-  create_duration = "120s"
+  create_duration = "240s"
   depends_on      = [module.project]
 }
