@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.3"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.53, < 7.0"
-    }
-
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.4.3"
-    }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-workflow/v0.1.0"
-  }
+resource "google_workflows_workflow" "simple_workflow" {
+  name            = var.workflow_name
+  region          = var.location
+  description     = var.workflow_description
+  service_account = var.service_account_email
+  project         = var.project_id
+  labels          = var.workflow_labels
+  source_contents = var.workflow_source
 }
