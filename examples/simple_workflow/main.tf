@@ -30,7 +30,7 @@ module "standalone_workflow" {
   workflow_name         = "standalone-workflow"
   location              = "us-central1"
   service_account_email = module.service_account.email
-  workflow_source = <<-EOF
+  workflow_source       = <<-EOF
   # This is a sample workflow that simply reads wikipedia
   # Note that $$ is needed for Terraform
 

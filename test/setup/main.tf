@@ -75,6 +75,29 @@ resource "google_project_iam_member" "eventarc_service_agent" {
   depends_on = [time_sleep.wait_after_eventarc_sa_creation]
 }
 
+resource "google_project_service_identity" "workflow_sa" {
+  provider = google-beta
+  project  = module.project.project_id
+  service  = "workflows.googleapis.com"
+
+  depends_on = [module.project]
+}
+
+# Wait after service identity is created to allow for propagation.
+resource "time_sleep" "wait_after_workflow_sa_creation" {
+  create_duration = "60s"
+
+  depends_on = [google_project_service_identity.workflow_sa]
+}
+
+resource "google_project_iam_member" "workflow_service_agent" {
+  project = module.project.project_id
+  role    = "roles/workflows.serviceAgent"
+  member  = "serviceAccount:${google_project_service_identity.workflow_sa.email}"
+
+  depends_on = [time_sleep.wait_after_workflow_sa_creation]
+}
+
 # Wait after APIs are enabled to give time for them to spin up
 resource "time_sleep" "wait_after_apis" {
   create_duration = "240s"
