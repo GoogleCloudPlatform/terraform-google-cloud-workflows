@@ -22,7 +22,7 @@ module "cloud_workflow" {
   - getCurrentTime:
       call: http.get
       args:
-          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+          url: https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam
       result: CurrentDateTime
   - readWikipedia:
       call: http.get
@@ -30,7 +30,7 @@ module "cloud_workflow" {
           url: https://en.wikipedia.org/w/api.php
           query:
               action: opensearch
-              search: $${CurrentDateTime.body.dayOfTheWeek}
+              search: $${CurrentDateTime.body.dayOfWeek}
       result: WikiResult
   - returnOutput:
       return: $${WikiResult.body[1]}

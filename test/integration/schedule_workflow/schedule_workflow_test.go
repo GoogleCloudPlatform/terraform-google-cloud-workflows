@@ -52,8 +52,8 @@ func TestScheduleWorkflow(t *testing.T) {
 		schedulerTrigger := gcloud.Run(t, "scheduler jobs run "+schedulerJobId, gcOps)
 		assert.Equal("ENABLED", schedulerTrigger.Get("state").String(), "Scheduler Job should be in ENABLED status")
 
-		fmt.Println("Sleeping for ", waitSeconds, " seconds")
-		time.Sleep(5 * time.Second)
+		fmt.Println("Sleeping for 40 seconds")
+		time.Sleep(40 * time.Second)
 
 		workflowExecution := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
 		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")

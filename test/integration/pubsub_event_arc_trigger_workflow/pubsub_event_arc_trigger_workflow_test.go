@@ -26,8 +26,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Retry if these errors are encountered.
+var retryErrors = map[string]string{
+	".*Provider produced inconsistent final plan.*": "Provider bug, retry",
+}
+
 func TestPubsubEventArcTriggerWorkflow(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t, tft.WithRetryableTerraformErrors(retryErrors, 5, time.Minute))
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		waitSeconds := 5
