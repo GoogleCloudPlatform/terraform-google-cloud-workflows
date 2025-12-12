@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package schedule_workflow
+package simple_workflow_with_autocreate_sa
 
 import (
 	"fmt"
@@ -26,34 +26,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestScheduleWorkflow(t *testing.T) {
+func TestSimpleWorkflow(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		waitSeconds := 5
 		bpt.DefaultVerify(assert)
 
-		projectId := bpt.GetStringOutput("project_id")
+		projectId := bpt.GetTFSetupStringOutput("project_id")
 		workflowId := bpt.GetStringOutput("workflow_id")
-		workflowRegion := bpt.GetStringOutput("workflow_region")
-		workflowRevisionId := bpt.GetStringOutput("workflow_revision_id")
-		schedulerJobId := bpt.GetStringOutput("scheduler_job_id")
-		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", workflowRegion, "--format", "json"})
+		workflowRevisionId := bpt.GetStringOutput("revision_id")
+		gcOps := gcloud.WithCommonArgs([]string{"--project", projectId, "--location", "us-central1", "--format", "json"})
 
 		workflowInfo := gcloud.Run(t, "workflows describe "+workflowId, gcOps)
 		assert.Equal(workflowRevisionId, workflowInfo.Get("revisionId").String(), "should have the right Workflow RevisionId")
-
-		schedulerInfo := gcloud.Run(t, "scheduler jobs describe "+schedulerJobId, gcOps)
-		assert.Contains(schedulerInfo.Get("httpTarget").Get("uri").String(), workflowId, "should have the right Workflow ID")
+		gcloud.Run(t, "workflows run "+workflowId, gcOps)
 
 		fmt.Println("Sleeping for ", waitSeconds, " seconds")
 		time.Sleep(5 * time.Second)
-
-		schedulerTrigger := gcloud.Run(t, "scheduler jobs run "+schedulerJobId, gcOps)
-		assert.Equal("ENABLED", schedulerTrigger.Get("state").String(), "Scheduler Job should be in ENABLED status")
-
-		fmt.Println("Sleeping for 40 seconds")
-		time.Sleep(40 * time.Second)
 
 		workflowExecution := gcloud.Run(t, "workflows  executions list "+workflowId, gcOps).Array()[0]
 		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")

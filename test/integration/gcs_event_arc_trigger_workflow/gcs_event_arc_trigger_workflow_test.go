@@ -47,12 +47,21 @@ func uploadToGCS(bucket, file string) {
 	check(err)
 }
 
+// Retry if these errors are encountered.
+var retryErrors = map[string]string{
+	".*Provider produced inconsistent final plan.*": "Provider bug, retry",
+}
+
+
 func TestGcsEventArcTriggerWorkflow(t *testing.T) {
-	bpt := tft.NewTFBlueprintTest(t)
+	bpt := tft.NewTFBlueprintTest(t, tft.WithRetryableTerraformErrors(retryErrors, 5, time.Minute))
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
 		waitSeconds := 5
 		bpt.DefaultVerify(assert)
+
+		fmt.Println("Sleeping for ", waitSeconds, " seconds")
+		time.Sleep(5 * time.Second)
 
 		projectId := bpt.GetStringOutput("project_id")
 		workflowId := bpt.GetStringOutput("workflow_id")

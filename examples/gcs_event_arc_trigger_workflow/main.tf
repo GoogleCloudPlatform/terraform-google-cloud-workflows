@@ -55,7 +55,7 @@ resource "google_project_iam_binding" "project" {
 }
 
 resource "random_string" "string" {
-  length  = 8
+  length  = 4
   lower   = true
   upper   = false
   special = false
@@ -66,9 +66,10 @@ module "service_account" {
   source     = "terraform-google-modules/service-accounts/google"
   version    = "~> 4.1.1"
   project_id = var.project_id
-  prefix     = "gcs-eventarc-workflow"
+  prefix     = "eventarc-wf-${random_string.string.result}"
   names      = ["simple"]
   project_roles = ["${var.project_id}=>roles/workflows.invoker",
+    "${var.project_id}=>roles/eventarc.serviceAgent",
   "${var.project_id}=>roles/eventarc.eventReceiver"]
 }
 
