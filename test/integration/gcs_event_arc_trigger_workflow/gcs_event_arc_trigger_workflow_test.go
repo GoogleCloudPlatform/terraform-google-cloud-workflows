@@ -42,7 +42,7 @@ func writeFile(fileName string) {
 }
 
 func uploadToGCS(bucket, file string) {
-	cmd := exec.Command("gsutil", "cp", file, "gs://"+bucket+"/"+filepath.Base(file))
+	cmd := exec.Command("gcloud", "storage", "cp", file, "gs://"+bucket+"/"+filepath.Base(file))
 	err := cmd.Run()
 	check(err)
 }
