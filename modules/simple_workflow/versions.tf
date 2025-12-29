@@ -24,6 +24,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-workflow:simple-workflow/v0.1.3"
+    module_name = "blueprints/terraform/terraform-google-cloud-workflow:simple-workflow/v0.2.0"
   }
 }
