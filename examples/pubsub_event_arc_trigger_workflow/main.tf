@@ -32,7 +32,7 @@ resource "random_string" "string" {
 
 module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.6.0"
   project_id    = var.project_id
   prefix        = "eventarc-wf-${random_string.string.result}"
   names         = ["simple"]
