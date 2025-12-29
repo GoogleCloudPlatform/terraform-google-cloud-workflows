@@ -14,7 +14,7 @@ The resources/services/activations/deletions that this module will create/trigge
 ```hcl
 module "cloud_workflow" {
   source  = "GoogleCloudPlatform/cloud-workflows/google"
-  version = "~> 0.1"
+  version = "~> 0.2"
 
   workflow_name         = "wf-sample"
   region                = "us-central1"

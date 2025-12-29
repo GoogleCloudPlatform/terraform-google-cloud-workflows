@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.2.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows/compare/v0.1.1...v0.2.0) (2025-12-29)
+
+
+### Features
+
+* Adding Submodule for Standalone Workflow for ADC ([#54](https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows/issues/54)) ([dc66fdd](https://github.com/GoogleCloudPlatform/terraform-google-cloud-workflows/commit/dc66fdd0191f680504fdaec31b474ac165adc25e))
+
 ## 0.1.0 (2022-11-16)
 
 
