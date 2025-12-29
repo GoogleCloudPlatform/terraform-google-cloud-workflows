@@ -42,7 +42,7 @@ func writeFile(fileName string) {
 }
 
 func uploadToGCS(bucket, file string) {
-	cmd := exec.Command("gsutil", "cp", file, "gs://"+bucket+"/"+filepath.Base(file))
+	cmd := exec.Command("gcloud", "storage", "cp", file, "gs://"+bucket+"/"+filepath.Base(file))
 	err := cmd.Run()
 	check(err)
 }
@@ -51,7 +51,6 @@ func uploadToGCS(bucket, file string) {
 var retryErrors = map[string]string{
 	".*Provider produced inconsistent final plan.*": "Provider bug, retry",
 }
-
 
 func TestGcsEventArcTriggerWorkflow(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t, tft.WithRetryableTerraformErrors(retryErrors, 5, time.Minute))
