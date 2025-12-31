@@ -58,3 +58,9 @@ spec:
         workflow_source:
           name: workflow_source
           title: Workflow Source
+    runtime:
+      outputs:
+        workflow_id:
+          visibility: VISIBILITY_ROOT
+        revision_id:
+          visibility: VISIBILITY_ROOT
