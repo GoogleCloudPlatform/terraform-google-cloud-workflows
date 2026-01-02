@@ -24,7 +24,7 @@ module "service_account" {
 }
 
 module "standalone_workflow" {
-  source  = "../../modules/simple_workflow"
+  source = "../../modules/simple_workflow"
 
   project_id            = var.project_id
   workflow_name         = "standalone-workflow"
