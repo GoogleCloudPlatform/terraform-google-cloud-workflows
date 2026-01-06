@@ -23,7 +23,7 @@ resource "google_pubsub_topic" "event_arc" {
 }
 
 resource "random_string" "string" {
-  length  = 4
+  length  = 6
   lower   = true
   upper   = false
   special = false
@@ -34,7 +34,7 @@ module "service_account" {
   source        = "terraform-google-modules/service-accounts/google"
   version       = "~> 4.1.1"
   project_id    = var.project_id
-  prefix        = "eventarc-wf-${random_string.string.result}"
+  prefix        = "earc-wf-${random_string.string.result}"
   names         = ["simple"]
   project_roles = ["${var.project_id}=>roles/workflows.invoker"]
 }
