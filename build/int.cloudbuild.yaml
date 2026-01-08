@@ -27,21 +27,51 @@ steps:
 - id: simple-example-init
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
-- id: simple-example-apply
+- id: gcs-event-arc-trigger-apply
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run all --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestGcsEventArcTriggerWorkflow --stage apply --verbose']
   waitFor:
     - simple-example-init
-- id: simple-example-verify
+- id: gcs-event-arc-trigger-verify
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run all --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestGcsEventArcTriggerWorkflow --stage verify --verbose']
   waitFor:
-    - simple-example-apply
-- id: simple-example-teardown
+    - gcs-event-arc-trigger-apply
+- id: gcs-event-arc-trigger-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run all --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestGcsEventArcTriggerWorkflow --stage teardown --verbose']
   waitFor:
-    - simple-example-verify
+    - gcs-event-arc-trigger-verify
+- id: pub-sub-trigger-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPubsubEventArcTriggerWorkflow --stage apply --verbose']
+  waitFor:
+    - gcs-event-arc-trigger-teardown
+- id: pub-sub-trigger-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPubsubEventArcTriggerWorkflow --stage verify --verbose']
+  waitFor:
+    - pub-sub-trigger-apply
+- id: pub-sub-trigger-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestPubsubEventArcTriggerWorkflow --stage teardown --verbose']
+  waitFor:
+    - pub-sub-trigger-verify
+- id: simple-wf-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWorkflow --stage apply --verbose']
+  waitFor:
+    - pub-sub-trigger-teardown
+- id: simple-wf-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWorkflow --stage verify --verbose']
+  waitFor:
+    - simple-wf-apply
+- id: ssimple-wf-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleWorkflow --stage teardown --verbose']
+  waitFor:
+    - simple-wf-verify
 tags:
 - 'ci'
 - 'integration'

@@ -53,7 +53,7 @@ func TestScheduleWorkflowAutoCreateSa(t *testing.T) {
 		assert.Equal("ENABLED", schedulerTrigger.Get("state").String(), "Scheduler Job should be in ENABLED status")
 
 		fmt.Println("Sleeping for 60 seconds")
-		time.Sleep(60 * time.Second)
+		time.Sleep(80 * time.Second)
 
 		workflowExecution := gcloud.Run(t, "workflows executions list "+workflowId, gcOps).Array()[0]
 		assert.Equal("SUCCEEDED", workflowExecution.Get("state").String(), "Workflow Job should be in SUCCEEDED status")
