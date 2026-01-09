@@ -67,11 +67,54 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSimpleWorkflow --stage verify --verbose']
   waitFor:
     - simple-wf-apply
-- id: ssimple-wf-teardown
+- id: simple-wf-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSimpleWorkflow --stage teardown --verbose']
   waitFor:
     - simple-wf-verify
+- id: schedule-wf-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflow --stage apply --verbose']
+  waitFor:
+    - simple-wf-teardown
+- id: schedule-wf-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflow --stage verify --verbose']
+  waitFor:
+    - schedule-wf-apply
+- id: schedule-wf-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflow --stage teardown --verbose']
+  waitFor:
+    - schedule-wf-verify
+- id: schedule-wf-with-sa-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowAutoCreateSa --stage apply --verbose']
+  waitFor:
+    - schedule-wf-teardown
+- id: schedule-wf-with-sa-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowAutoCreateSa --stage verify --verbose']
+  waitFor:
+    - schedule-wf-with-sa-apply
+- id: schedule-wf-with-sa-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowAutoCreateSa --stage teardown --verbose']
+  waitFor:
+    - schedule-wf-with-sa-verify
+- id: schedule-wf-with-args-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowWithArgs --stage apply --verbose']
+  waitFor:
+    - schedule-wf-with-sa-teardown
+- id: schedule-wf-with-args-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowWithArgs --stage verify --verbose']
+  waitFor:
+    - schedule-wf-with-args-apply
+- id: schedule-wf-with-args-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestScheduleWorkflowWithArgs --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

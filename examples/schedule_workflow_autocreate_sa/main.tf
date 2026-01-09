@@ -17,6 +17,12 @@ data "google_compute_default_service_account" "default" {
   project = var.project_id
 }
 
+resource "google_project_iam_member" "default_workflow_invoker" {
+  project = var.project_id
+  role    = "roles/workflows.invoker"
+  member  = "serviceAccount:${data.google_compute_default_service_account.default.email}"
+}
+
 module "cloud_workflow" {
   source  = "GoogleCloudPlatform/cloud-workflows/google"
   version = "~> 0.1"
