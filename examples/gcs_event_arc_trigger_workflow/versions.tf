@@ -22,7 +22,7 @@ terraform {
     }
 
     random = {
-      version = "~> 3.4.3"
+      version = "~> 3.8.0"
     }
   }
   required_version = ">= 0.13"
