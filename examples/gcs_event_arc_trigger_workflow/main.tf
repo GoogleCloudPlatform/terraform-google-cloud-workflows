@@ -64,7 +64,7 @@ resource "random_string" "string" {
 
 module "service_account" {
   source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.1.1"
+  version    = "~> 4.7.0"
   project_id = var.project_id
   prefix     = "eventarc-wf-${random_string.string.result}"
   names      = ["simple"]
@@ -87,7 +87,7 @@ module "gcs_buckets" {
 
 module "cloud_workflow" {
   source  = "GoogleCloudPlatform/cloud-workflows/google"
-  version = "~> 0.1"
+  version = "~> 0.2"
 
   project_id            = var.project_id
   workflow_name         = "wf-gcs-eventarc"
