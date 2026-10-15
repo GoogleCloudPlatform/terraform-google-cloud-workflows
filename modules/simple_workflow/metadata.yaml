@@ -73,6 +73,7 @@ spec:
       - name: service_account_email
         description: Service account email.
         varType: string
+        defaultValue: null
         connections:
           - source:
               source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
